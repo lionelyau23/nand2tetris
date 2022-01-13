@@ -1,0 +1,215 @@
+function Main.main 8
+push constant 0
+pop static 0
+label WHILE_EXP0
+push static 0
+not
+not
+if-goto WHILE_END0
+push constant 45
+call String.new 1
+push constant 73
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 112
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 98
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 102
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 57
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Keyboard.readLine 1
+pop local 0
+push constant 0
+pop local 2
+push constant 0
+pop local 4
+push constant 0
+pop local 5
+push constant 10
+pop local 6
+push local 0
+call String.length 1
+pop local 1
+push local 1
+push constant 10
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 10
+pop local 1
+label IF_FALSE0
+call Screen.clearScreen 0
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+label WHILE_EXP1
+push local 2
+push local 1
+lt
+not
+if-goto WHILE_END1
+push local 0
+push local 2
+call String.charAt 2
+pop local 3
+push local 3
+push local 4
+push local 5
+call Drawer.drawNumber 3
+pop temp 0
+push local 2
+push constant 1
+add
+pop local 2
+push local 4
+push local 6
+add
+pop local 4
+goto WHILE_EXP1
+label WHILE_END1
+push constant 21
+call String.new 1
+push constant 67
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 63
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 49
+call String.appendChar 2
+push constant 51
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 120
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Keyboard.readInt 1
+pop local 7
+push local 7
+push constant 13
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+pop static 0
+label IF_FALSE1
+call Screen.clearScreen 0
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

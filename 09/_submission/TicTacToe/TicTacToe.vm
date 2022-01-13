@@ -1,0 +1,621 @@
+function TicTacToe.new 0
+push constant 7
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push constant 0
+pop this 3
+push constant 0
+pop this 1
+push constant 0
+pop this 2
+push constant 3
+call Array.new 1
+pop this 4
+push constant 3
+call Array.new 1
+pop this 5
+push constant 3
+call Array.new 1
+pop this 6
+push pointer 0
+call TicTacToe.emptyGrids 1
+pop temp 0
+push pointer 0
+return
+function TicTacToe.emptyGrids 1
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 3
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 4
+add
+push constant 65
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push this 5
+add
+push constant 65
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push this 6
+add
+push constant 65
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function TicTacToe.printGrid 1
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 3
+lt
+not
+if-goto WHILE_END0
+push constant 0
+push local 0
+call Output.moveCursor 2
+pop temp 0
+push local 0
+push this 4
+add
+pop pointer 1
+push that 0
+call Output.printChar 1
+pop temp 0
+push constant 1
+push local 0
+call Output.moveCursor 2
+pop temp 0
+push local 0
+push this 5
+add
+pop pointer 1
+push that 0
+call Output.printChar 1
+pop temp 0
+push constant 2
+push local 0
+call Output.moveCursor 2
+pop temp 0
+push local 0
+push this 6
+add
+pop pointer 1
+push that 0
+call Output.printChar 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function TicTacToe.play 0
+push argument 0
+pop pointer 0
+push argument 2
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push this 4
+add
+push this 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+goto IF_END0
+label IF_FALSE0
+push argument 2
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 1
+push this 5
+add
+push this 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+goto IF_END1
+label IF_FALSE1
+push argument 1
+push this 6
+add
+push this 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+label IF_END1
+label IF_END0
+push this 3
+push constant 1
+add
+pop this 3
+push this 3
+push constant 9
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+pop this 1
+label IF_FALSE2
+push pointer 0
+call TicTacToe.checkWon 1
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+not
+pop this 1
+push constant 0
+not
+pop this 2
+push constant 0
+return
+goto IF_END3
+label IF_FALSE3
+push pointer 0
+call TicTacToe.flipTurn 1
+pop temp 0
+push constant 0
+return
+label IF_END3
+function TicTacToe.getGrid 0
+push argument 0
+pop pointer 0
+push argument 2
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push this 4
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE0
+push argument 2
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 1
+push this 5
+add
+pop pointer 1
+push that 0
+return
+goto IF_END1
+label IF_FALSE1
+push argument 1
+push this 6
+add
+pop pointer 1
+push that 0
+return
+label IF_END1
+function TicTacToe.checkWon 0
+push argument 0
+pop pointer 0
+push pointer 0
+call TicTacToe.rowWin 1
+push pointer 0
+call TicTacToe.colWin 1
+or
+push pointer 0
+call TicTacToe.diaWin 1
+or
+return
+function TicTacToe.rowWin 0
+push argument 0
+pop pointer 0
+push constant 0
+push this 4
+add
+pop pointer 1
+push that 0
+push constant 65
+eq
+not
+push constant 0
+push this 4
+add
+pop pointer 1
+push that 0
+and
+push constant 1
+push this 4
+add
+pop pointer 1
+push that 0
+eq
+push constant 0
+push this 4
+add
+pop pointer 1
+push that 0
+and
+push constant 2
+push this 4
+add
+pop pointer 1
+push that 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 0
+push this 5
+add
+pop pointer 1
+push that 0
+push constant 65
+eq
+not
+push constant 0
+push this 5
+add
+pop pointer 1
+push that 0
+and
+push constant 1
+push this 5
+add
+pop pointer 1
+push that 0
+eq
+push constant 0
+push this 5
+add
+pop pointer 1
+push that 0
+and
+push constant 2
+push this 5
+add
+pop pointer 1
+push that 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+push constant 0
+push this 6
+add
+pop pointer 1
+push that 0
+push constant 65
+eq
+not
+push constant 0
+push this 6
+add
+pop pointer 1
+push that 0
+and
+push constant 1
+push this 6
+add
+pop pointer 1
+push that 0
+eq
+push constant 0
+push this 6
+add
+pop pointer 1
+push that 0
+and
+push constant 2
+push this 6
+add
+pop pointer 1
+push that 0
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+return
+label IF_FALSE2
+push constant 0
+return
+function TicTacToe.colWin 0
+push argument 0
+pop pointer 0
+push constant 0
+push this 4
+add
+pop pointer 1
+push that 0
+push constant 65
+eq
+not
+push constant 0
+push this 4
+add
+pop pointer 1
+push that 0
+and
+push constant 0
+push this 5
+add
+pop pointer 1
+push that 0
+eq
+push constant 0
+push this 4
+add
+pop pointer 1
+push that 0
+and
+push constant 0
+push this 6
+add
+pop pointer 1
+push that 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 1
+push this 4
+add
+pop pointer 1
+push that 0
+push constant 65
+eq
+not
+push constant 1
+push this 4
+add
+pop pointer 1
+push that 0
+and
+push constant 1
+push this 5
+add
+pop pointer 1
+push that 0
+eq
+push constant 1
+push this 4
+add
+pop pointer 1
+push that 0
+and
+push constant 1
+push this 6
+add
+pop pointer 1
+push that 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+push constant 2
+push this 4
+add
+pop pointer 1
+push that 0
+push constant 65
+eq
+not
+push constant 2
+push this 4
+add
+pop pointer 1
+push that 0
+and
+push constant 2
+push this 5
+add
+pop pointer 1
+push that 0
+eq
+push constant 2
+push this 4
+add
+pop pointer 1
+push that 0
+and
+push constant 2
+push this 6
+add
+pop pointer 1
+push that 0
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+return
+label IF_FALSE2
+push constant 0
+return
+function TicTacToe.diaWin 0
+push argument 0
+pop pointer 0
+push constant 1
+push this 5
+add
+pop pointer 1
+push that 0
+push constant 65
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 1
+push this 5
+add
+pop pointer 1
+push that 0
+push constant 0
+push this 4
+add
+pop pointer 1
+push that 0
+eq
+push constant 1
+push this 5
+add
+pop pointer 1
+push that 0
+and
+push constant 2
+push this 6
+add
+pop pointer 1
+push that 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+push constant 1
+push this 5
+add
+pop pointer 1
+push that 0
+push constant 2
+push this 4
+add
+pop pointer 1
+push that 0
+eq
+push constant 1
+push this 5
+add
+pop pointer 1
+push that 0
+and
+push constant 0
+push this 6
+add
+pop pointer 1
+push that 0
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+return
+label IF_FALSE2
+label IF_FALSE0
+push constant 0
+return
+function TicTacToe.getTurn 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function TicTacToe.getWon 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function TicTacToe.getOver 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function TicTacToe.flipTurn 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 88
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 79
+pop this 0
+goto IF_END0
+label IF_FALSE0
+push constant 88
+pop this 0
+label IF_END0
+push constant 0
+return
+function TicTacToe.dispose 0
+push argument 0
+pop pointer 0
+push this 4
+call Array.dispose 1
+pop temp 0
+push this 5
+call Array.dispose 1
+pop temp 0
+push this 6
+call Array.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

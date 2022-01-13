@@ -1,0 +1,47 @@
+// This file is part of www.nand2tetris.org
+// by Kejam (Aleksey Prozorov) kejamwork@mail.ru
+// File name: Translator/Main.jack
+
+
+/** Translating numbers from 00000000000 to 9999999999 to screen.
+    The program doesn't try to prevent error of input and etc. errors.
+    I don't try to write perfect OOP code. Maybe I made some error but this course
+    it's not about write perfect code in Jack language.
+*/
+class Main {
+   static boolean exit;
+
+
+   function void main() {
+      var String number;
+      var int length, i, temp, x, y, step;
+      var int cont;
+      let exit = false;
+
+      while (~exit) {
+        let number = Keyboard.readLine("Input number from 00000000000 to 9999999999! ");
+        let i = 0;
+        let x = 0;
+        let y = 0;
+        let step = 10;
+        let length = number.length();
+        if (length > 10) {
+            let length = 10;
+        }
+        do Screen.clearScreen();
+        do Screen.setColor(true);
+        while (i < length) {
+            let temp = number.charAt(i);
+            do Drawer.drawNumber(temp, x, y);
+            let i = i + 1;
+            let x = x + step;
+        }
+        let cont = Keyboard.readInt("Continue? 13 to exit ");
+        if(cont = 13) {
+            let exit = true;
+        }
+        do Screen.clearScreen();
+      }
+      return;
+   }
+}

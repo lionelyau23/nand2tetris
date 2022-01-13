@@ -1,0 +1,141 @@
+class TicTacToe {
+    field char turn;
+    field boolean over, won;
+    field int filled;
+    field Array row0, row1, row2;
+
+    constructor TicTacToe new(char start) {
+        let turn = start;
+        let filled = 0;
+        let over = false;
+        let won = false;
+
+        let row0 = Array.new(3);
+        let row1 = Array.new(3);
+        let row2 = Array.new(3);
+
+        do emptyGrids();
+        // do printGrid();
+
+        return this;
+    }
+
+    // initialize all grids to A, as empty
+    method void emptyGrids() {
+        var int i;
+        let i = 0;
+
+        while (i < 3) {
+            let row0[i] = 65;
+            let row1[i] = 65;
+            let row2[i] = 65;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // print grid for debug
+    method void printGrid() {
+        var int i;
+        let i = 0;
+
+        while (i < 3) {
+            do Output.moveCursor(0,i);
+            do Output.printChar(row0[i]);
+            do Output.moveCursor(1,i);
+            do Output.printChar(row1[i]);
+            do Output.moveCursor(2,i);
+            do Output.printChar(row2[i]);
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void play(int x, int y) {
+        // update the grid array for the played turn
+        if (y = 0) { let row0[x] = turn; }
+        else {
+            if (y = 1) { let row1[x] = turn; }
+            else { let row2[x] = turn; }
+        }
+
+        // do printGrid();
+
+        // check if all grids are filled, if all filled and not ended yet, => draw
+        let filled = filled + 1;
+        if (filled = 9) {
+            let over = true;
+        }
+
+        // check win status
+        if (checkWon()) {
+            let over = true;
+            let won = true;
+            return;
+        }
+        //if no one wins, flip turn for next turn
+        else {
+            do flipTurn();
+            return;
+        }
+
+    }
+
+    method char getGrid(int x, int y) {
+        if (y = 0) { return row0[x]; }
+        if (y = 1) { return row1[x]; }
+        else { return row2[x]; }
+    }
+
+    // check if some has won
+    method boolean checkWon() {
+        return rowWin() | colWin() | diaWin();
+    }
+
+    // check winner in a row
+    method boolean rowWin() {
+        if (~(row0[0] = 65) & row0[0] = row0[1] & row0[0] = row0[2]) { return true; }
+        if (~(row1[0] = 65) & row1[0] = row1[1] & row1[0] = row1[2]) { return true; }
+        if (~(row2[0] = 65) & row2[0] = row2[1] & row2[0] = row2[2]) { return true; }
+        return false;
+    }
+
+    // check winner in a column
+    method boolean colWin() {
+        if (~(row0[0] = 65) & row0[0] = row1[0] & row0[0] = row2[0]) { return true; }
+        if (~(row0[1] = 65) & row0[1] = row1[1] & row0[1] = row2[1]) { return true; }
+        if (~(row0[2] = 65) & row0[2] = row1[2] & row0[2] = row2[2]) { return true; }
+        return false;
+    }
+
+    // check winner in diagonal
+    method boolean diaWin() {
+        if (~(row1[1] = 65)) {
+            if (row1[1] = row0[0] & row1[1] = row2[2]) { return true; }
+            if (row1[1] = row0[2] & row1[1] = row2[0]) { return true; }
+        }
+        return false;
+    }
+
+    method char getTurn() { return turn; }
+
+    method boolean getWon() { return won; }
+
+    method boolean getOver() { return over; }
+
+    // simply flip the turn
+    method void flipTurn() {
+        if (turn = 88) { let turn = 79; }
+        else { let turn = 88; }
+        return;
+    }
+
+    method void dispose() {
+        do row0.dispose();
+        do row1.dispose();
+        do row2.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

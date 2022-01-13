@@ -1,0 +1,11 @@
+/** Initializes and launches a Pacman game */
+
+class Main {
+    function void main() {
+    var PacmanGame game;
+    let game = PacmanGame.new();
+    do game.play();
+    do game.dispose();
+    return;
+    }
+}

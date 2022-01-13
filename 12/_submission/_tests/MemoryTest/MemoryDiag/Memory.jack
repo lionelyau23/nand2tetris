@@ -1,0 +1,150 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Memory.jack
+
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory {
+    static Array ram;
+    static Array heap, freeList;
+    static int illegal;
+
+    /** Initializes the class. */
+    function void init() {
+        let ram = 0;
+        let illegal = -31416;
+
+        let heap = 2048;
+        let freeList = heap;
+
+        let heap[0] = illegal;
+        let heap[1] = 14334;
+
+
+        return;
+    }
+
+    /** Returns the RAM value at the given address. */
+    function int peek(int address) {
+        return ram[address];
+    }
+
+    /** Sets the RAM value at the given address to the given value. */
+    function void poke(int address, int value) {
+        let ram[address] = value;
+        return;
+    }
+
+    /** Finds an available RAM block of the given size and returns
+     *  a reference to its base address. */
+    function int alloc(int size) {
+        var Array block, prev, current;
+        // simple implementation with no deAlloc
+        // let block = freeList;
+        // let freeList = freeList + size;
+        let current = freeList;
+        let prev = illegal;
+        while (~(current = illegal)) {
+            // if current.size > size + 2, carve new block from currnet block
+            if (~(current[1] < (size + 2))) {
+                // set block to header of new block
+                let block = current + current[1] - size;
+                // set block.ext to 0 and set block.size to size
+                let block[0] = illegal;
+                let block[1] = size;
+                // move block pointer to actual memory space
+                let block = block + 2;
+
+                // update current.size
+                let current[1] = current[1] - (size + 2);
+
+                return block;
+            } 
+            // else {
+            //     // if current.size = size + 2, remove from freeList
+            //     if (current[1] = (size + 2)) {
+            //         let block = current;
+
+            //     }
+            // }
+
+            let prev = current;
+            // set current to current.next
+            let current = current[0];
+        }
+
+        do Sys.error(0);
+        return 0;
+    }
+
+    /** De-allocates the given object (cast as an array) by making
+     *  it available for future allocations. */
+    function void deAlloc(Array o) {
+        var Array prev, next;
+
+        let o = o - 2;
+        if (~(o[0] = illegal)) { 
+            do Sys.error(1); 
+        }
+
+        // find a position in heap to main ascending order
+        let prev = freeList;
+        let next = prev[0];
+        while (~(next = illegal) & (next < o)) {
+            let prev = next;
+            let next = prev[0];
+        }
+
+        let o[0] = next;
+        let prev[0] = o;
+
+        // attempt defragmentation
+        // merge object and next
+        if ((o + o[1] + 2) = next) {
+            let o[1] = o[1] + next[1] + 2;
+            let o[0] = next[0];
+        }
+
+        // merge prev and object
+        if ((prev + prev[1] + 2) = o) {
+            let prev[1] = prev[1] + o[1] + 2;
+            let prev[0] = o[0];
+        }
+
+        return;
+    }    
+
+    function void printHeap() {
+        var Array current;
+        var int size;
+
+        let current = freeList;
+        let size = 0;
+
+        do Output.printChar(72);
+        do Output.printInt(freeList);
+        do Output.printChar(32);
+        do Output.println();
+
+        while (~(current = illegal)){
+            do Output.printChar(67);
+            do Output.printInt(current);
+            do Output.printChar(32);
+
+            do Output.printChar(83);
+            do Output.printInt(current[1]);
+            do Output.printChar(32);
+
+            let size = size + current[1];
+
+            do Output.println();
+
+            let current = current[0];
+        }
+        return;
+    }
+}

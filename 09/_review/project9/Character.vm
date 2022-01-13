@@ -1,0 +1,3100 @@
+function Character.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push constant 14
+pop this 3
+push argument 3
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop this 3
+push constant 0
+pop static 3
+label IF_FALSE0
+push argument 4
+pop this 4
+push pointer 0
+call Character.drawInit 1
+pop temp 0
+push pointer 0
+return
+function Character.setGrid 0
+push argument 0
+pop static 0
+push constant 0
+return
+function Character.setDrawLocOffset 0
+push argument 0
+pop static 2
+push constant 0
+return
+function Character.setStatics 0
+push argument 0
+pop static 11
+push argument 1
+pop static 5
+push argument 2
+pop static 4
+push constant 0
+pop static 3
+push constant 0
+return
+function Character.tickPacman 2
+push argument 0
+pop pointer 0
+push static 3
+push constant 1
+add
+pop static 3
+push static 3
+push static 5
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop static 3
+label IF_FALSE0
+push static 0
+push this 0
+push this 1
+call Grid.get 3
+pop local 1
+push local 1
+push constant 64
+and
+push constant 0
+eq
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push static 0
+push this 0
+push this 1
+call Grid.eat 3
+pop temp 0
+push static 11
+push constant 1
+sub
+pop static 11
+push static 11
+push constant 0
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+return
+label IF_FALSE2
+label IF_FALSE1
+push argument 1
+push constant 130
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 1
+pop local 0
+label IF_FALSE3
+push argument 1
+push constant 131
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 2
+pop local 0
+label IF_FALSE4
+push argument 1
+push constant 132
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 4
+pop local 0
+label IF_FALSE5
+push argument 1
+push constant 133
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 8
+pop local 0
+label IF_FALSE6
+push local 1
+push local 0
+and
+pop local 0
+push local 0
+push constant 0
+eq
+not
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push local 0
+pop this 2
+label IF_FALSE7
+push this 2
+push local 1
+and
+pop this 2
+push pointer 0
+push local 1
+call Character.move 2
+pop temp 0
+push this 0
+pop static 6
+push this 1
+pop static 7
+push this 2
+pop static 10
+push constant 0
+return
+function Character.tickBlinky 0
+push argument 0
+pop pointer 0
+push static 3
+push static 4
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push constant 53
+push constant 0
+call Character.tickGhost 3
+return
+label IF_FALSE0
+push pointer 0
+push static 6
+push static 7
+call Character.tickGhost 3
+return
+function Character.tickPinky 0
+push argument 0
+pop pointer 0
+push static 11
+push constant 515
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push static 3
+push static 4
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+push constant 3
+push constant 0
+call Character.tickGhost 3
+return
+label IF_FALSE1
+push static 10
+push constant 1
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push static 6
+push constant 4
+sub
+push static 7
+call Character.tickGhost 3
+return
+label IF_FALSE2
+push static 10
+push constant 2
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+push static 6
+push static 7
+push constant 4
+sub
+call Character.tickGhost 3
+return
+label IF_FALSE3
+push static 10
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+push static 6
+push constant 4
+add
+push static 7
+call Character.tickGhost 3
+return
+label IF_FALSE4
+push pointer 0
+push static 6
+push static 7
+push constant 4
+add
+call Character.tickGhost 3
+return
+function Character.tickInky 4
+push argument 0
+pop pointer 0
+push static 11
+push constant 480
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push static 3
+push static 4
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+push constant 55
+push constant 31
+call Character.tickGhost 3
+return
+label IF_FALSE1
+push static 10
+push constant 1
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push static 6
+push constant 2
+sub
+pop local 0
+push static 7
+pop local 1
+label IF_FALSE2
+push static 10
+push constant 2
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push static 6
+pop local 0
+push static 7
+push constant 2
+sub
+pop local 1
+label IF_FALSE3
+push static 10
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push static 6
+push constant 2
+add
+pop local 0
+push static 7
+pop local 1
+label IF_FALSE4
+push static 10
+push constant 8
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push static 6
+pop local 0
+push static 7
+push constant 2
+add
+pop local 1
+label IF_FALSE5
+push local 0
+push local 0
+add
+push static 8
+sub
+pop local 2
+push local 1
+push local 1
+add
+push static 9
+sub
+pop local 3
+push pointer 0
+push local 2
+push local 3
+call Character.tickGhost 3
+return
+function Character.tickClyde 0
+push argument 0
+pop pointer 0
+push static 11
+push constant 340
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push static 3
+push static 4
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+push constant 1
+push constant 31
+call Character.tickGhost 3
+return
+label IF_FALSE1
+push pointer 0
+push static 6
+push this 0
+call Character.distance 3
+push pointer 0
+push static 7
+push this 1
+call Character.distance 3
+add
+push constant 8
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push static 6
+push static 7
+call Character.tickGhost 3
+return
+label IF_FALSE2
+push pointer 0
+push constant 1
+push constant 31
+call Character.tickGhost 3
+return
+function Character.distance 2
+push argument 0
+pop pointer 0
+push argument 1
+pop local 0
+push argument 2
+pop local 1
+push argument 1
+push constant 0
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+neg
+pop local 0
+label IF_FALSE0
+push argument 2
+push constant 0
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 2
+neg
+pop local 1
+label IF_FALSE1
+push argument 1
+push argument 2
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 1
+push argument 2
+sub
+return
+label IF_FALSE2
+push argument 2
+push argument 1
+sub
+return
+function Character.tickGhost 3
+push argument 0
+pop pointer 0
+push static 0
+push this 0
+push this 1
+call Grid.get 3
+pop local 0
+push this 2
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 4
+pop local 1
+label IF_FALSE0
+push this 2
+push constant 4
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 1
+pop local 1
+label IF_FALSE1
+push this 2
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 8
+pop local 1
+label IF_FALSE2
+push this 2
+push constant 8
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 2
+pop local 1
+label IF_FALSE3
+push static 3
+push static 4
+eq
+push static 3
+push static 5
+eq
+or
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 0
+push local 1
+and
+push constant 0
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 1232
+call Sys.error 1
+pop temp 0
+label IF_FALSE5
+push local 1
+pop this 2
+push this 0
+push static 6
+eq
+push this 1
+push static 7
+eq
+and
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 0
+not
+return
+label IF_FALSE6
+push pointer 0
+push local 0
+call Character.move 2
+pop temp 0
+push this 0
+push static 6
+eq
+push this 1
+push static 7
+eq
+and
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push constant 0
+not
+return
+label IF_FALSE7
+push constant 0
+return
+label IF_FALSE4
+push local 0
+push constant 3840
+and
+push constant 256
+call Math.divide 2
+pop local 2
+push local 2
+push constant 0
+eq
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push local 0
+push constant 16
+and
+push constant 16
+eq
+not
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push local 0
+push constant 15
+and
+push local 1
+not
+and
+pop this 2
+label IF_FALSE9
+push local 0
+push constant 32
+and
+push constant 32
+eq
+if-goto IF_TRUE10
+goto IF_FALSE10
+label IF_TRUE10
+push constant 1
+pop this 2
+label IF_FALSE10
+label IF_FALSE8
+push local 2
+push constant 0
+eq
+not
+if-goto IF_TRUE11
+goto IF_FALSE11
+label IF_TRUE11
+push local 2
+push local 1
+not
+and
+pop local 2
+push pointer 0
+push local 2
+push argument 1
+push this 0
+sub
+push argument 2
+push this 1
+sub
+call Character.chaseTile 4
+pop this 2
+label IF_FALSE11
+push this 2
+push constant 1
+eq
+push this 2
+push constant 2
+eq
+or
+push this 2
+push constant 4
+eq
+or
+push this 2
+push constant 8
+eq
+or
+not
+if-goto IF_TRUE12
+goto IF_FALSE12
+label IF_TRUE12
+push constant 1233
+call Sys.error 1
+pop temp 0
+label IF_FALSE12
+push this 0
+push static 6
+eq
+push this 1
+push static 7
+eq
+and
+if-goto IF_TRUE13
+goto IF_FALSE13
+label IF_TRUE13
+push constant 0
+not
+return
+label IF_FALSE13
+push pointer 0
+push local 0
+call Character.move 2
+pop temp 0
+push this 0
+push static 6
+eq
+push this 1
+push static 7
+eq
+and
+if-goto IF_TRUE14
+goto IF_FALSE14
+label IF_TRUE14
+push constant 0
+not
+return
+label IF_FALSE14
+push constant 0
+return
+function Character.chaseTile 0
+push argument 0
+pop pointer 0
+push argument 2
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 3
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 2
+return
+label IF_FALSE2
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 1
+return
+label IF_FALSE3
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 8
+return
+label IF_FALSE4
+label IF_FALSE1
+push argument 3
+push constant 0
+lt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 2
+return
+label IF_FALSE6
+label IF_FALSE5
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push constant 8
+return
+label IF_FALSE7
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push constant 1
+return
+label IF_FALSE8
+push constant 4
+push argument 1
+and
+push constant 4
+eq
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push constant 4
+return
+label IF_FALSE9
+push constant 1234
+call Sys.error 1
+pop temp 0
+label IF_FALSE0
+push argument 3
+push constant 0
+eq
+if-goto IF_TRUE10
+goto IF_FALSE10
+label IF_TRUE10
+push argument 2
+push constant 0
+lt
+if-goto IF_TRUE11
+goto IF_FALSE11
+label IF_TRUE11
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE12
+goto IF_FALSE12
+label IF_TRUE12
+push constant 1
+return
+label IF_FALSE12
+label IF_FALSE11
+push constant 4
+push argument 1
+and
+push constant 4
+eq
+if-goto IF_TRUE13
+goto IF_FALSE13
+label IF_TRUE13
+push constant 4
+return
+label IF_FALSE13
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE14
+goto IF_FALSE14
+label IF_TRUE14
+push constant 2
+return
+label IF_FALSE14
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE15
+goto IF_FALSE15
+label IF_TRUE15
+push constant 8
+return
+label IF_FALSE15
+push constant 1235
+call Sys.error 1
+pop temp 0
+label IF_FALSE10
+push argument 2
+push constant 0
+lt
+if-goto IF_TRUE16
+goto IF_FALSE16
+label IF_TRUE16
+push argument 3
+push constant 0
+lt
+if-goto IF_TRUE17
+goto IF_FALSE17
+label IF_TRUE17
+push argument 2
+push argument 3
+lt
+if-goto IF_TRUE18
+goto IF_FALSE18
+label IF_TRUE18
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE19
+goto IF_FALSE19
+label IF_TRUE19
+push constant 1
+return
+label IF_FALSE19
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE20
+goto IF_FALSE20
+label IF_TRUE20
+push constant 2
+return
+label IF_FALSE20
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE21
+goto IF_FALSE21
+label IF_TRUE21
+push constant 8
+return
+label IF_FALSE21
+push constant 1236
+call Sys.error 1
+pop temp 0
+label IF_FALSE18
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE22
+goto IF_FALSE22
+label IF_TRUE22
+push constant 2
+return
+label IF_FALSE22
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE23
+goto IF_FALSE23
+label IF_TRUE23
+push constant 1
+return
+label IF_FALSE23
+push constant 4
+push argument 1
+and
+push constant 4
+eq
+if-goto IF_TRUE24
+goto IF_FALSE24
+label IF_TRUE24
+push constant 4
+return
+label IF_FALSE24
+push constant 1237
+call Sys.error 1
+pop temp 0
+label IF_FALSE17
+push argument 2
+neg
+push argument 3
+gt
+if-goto IF_TRUE25
+goto IF_FALSE25
+label IF_TRUE25
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE26
+goto IF_FALSE26
+label IF_TRUE26
+push constant 1
+return
+label IF_FALSE26
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE27
+goto IF_FALSE27
+label IF_TRUE27
+push constant 8
+return
+label IF_FALSE27
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE28
+goto IF_FALSE28
+label IF_TRUE28
+push constant 2
+return
+label IF_FALSE28
+push constant 1238
+call Sys.error 1
+pop temp 0
+label IF_FALSE25
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE29
+goto IF_FALSE29
+label IF_TRUE29
+push constant 8
+return
+label IF_FALSE29
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE30
+goto IF_FALSE30
+label IF_TRUE30
+push constant 1
+return
+label IF_FALSE30
+push constant 4
+push argument 1
+and
+push constant 4
+eq
+if-goto IF_TRUE31
+goto IF_FALSE31
+label IF_TRUE31
+push constant 4
+return
+label IF_FALSE31
+push constant 1239
+call Sys.error 1
+pop temp 0
+label IF_FALSE16
+push argument 3
+push constant 0
+lt
+if-goto IF_TRUE32
+goto IF_FALSE32
+label IF_TRUE32
+push argument 2
+push argument 3
+neg
+gt
+if-goto IF_TRUE33
+goto IF_FALSE33
+label IF_TRUE33
+push constant 4
+push argument 1
+and
+push constant 4
+eq
+if-goto IF_TRUE34
+goto IF_FALSE34
+label IF_TRUE34
+push constant 4
+return
+label IF_FALSE34
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE35
+goto IF_FALSE35
+label IF_TRUE35
+push constant 2
+return
+label IF_FALSE35
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE36
+goto IF_FALSE36
+label IF_TRUE36
+push constant 8
+return
+label IF_FALSE36
+push constant 1240
+call Sys.error 1
+pop temp 0
+label IF_FALSE33
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE37
+goto IF_FALSE37
+label IF_TRUE37
+push constant 2
+return
+label IF_FALSE37
+push constant 4
+push argument 1
+and
+push constant 4
+eq
+if-goto IF_TRUE38
+goto IF_FALSE38
+label IF_TRUE38
+push constant 4
+return
+label IF_FALSE38
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE39
+goto IF_FALSE39
+label IF_TRUE39
+push constant 1
+return
+label IF_FALSE39
+push constant 1241
+call Sys.error 1
+pop temp 0
+label IF_FALSE32
+push argument 2
+push argument 3
+gt
+if-goto IF_TRUE40
+goto IF_FALSE40
+label IF_TRUE40
+push constant 4
+push argument 1
+and
+push constant 4
+eq
+if-goto IF_TRUE41
+goto IF_FALSE41
+label IF_TRUE41
+push constant 4
+return
+label IF_FALSE41
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE42
+goto IF_FALSE42
+label IF_TRUE42
+push constant 8
+return
+label IF_FALSE42
+push constant 2
+push argument 1
+and
+push constant 2
+eq
+if-goto IF_TRUE43
+goto IF_FALSE43
+label IF_TRUE43
+push constant 2
+return
+label IF_FALSE43
+push constant 1242
+call Sys.error 1
+pop temp 0
+label IF_FALSE40
+push constant 8
+push argument 1
+and
+push constant 8
+eq
+if-goto IF_TRUE44
+goto IF_FALSE44
+label IF_TRUE44
+push constant 8
+return
+label IF_FALSE44
+push constant 4
+push argument 1
+and
+push constant 4
+eq
+if-goto IF_TRUE45
+goto IF_FALSE45
+label IF_TRUE45
+push constant 4
+return
+label IF_FALSE45
+push constant 1
+push argument 1
+and
+push constant 1
+eq
+if-goto IF_TRUE46
+goto IF_FALSE46
+label IF_TRUE46
+push constant 1
+return
+label IF_FALSE46
+push constant 1243
+call Sys.error 1
+pop temp 0
+push constant 0
+return
+function Character.move 2
+push argument 0
+pop pointer 0
+push argument 1
+push constant 16
+and
+push constant 16
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push this 0
+push this 1
+push constant 0
+call Character.draw 4
+pop temp 0
+push pointer 0
+push this 0
+push constant 1
+add
+push this 1
+push constant 0
+call Character.draw 4
+pop temp 0
+push this 0
+push constant 1
+eq
+push this 0
+push constant 55
+eq
+or
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 1244
+call Sys.error 1
+pop temp 0
+label IF_FALSE1
+push this 0
+push constant 1
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 54
+pop this 0
+label IF_FALSE2
+push this 0
+push constant 55
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 2
+pop this 0
+label IF_FALSE3
+label IF_FALSE0
+push argument 1
+push constant 32
+and
+push constant 32
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+push this 0
+push this 1
+push constant 0
+call Character.draw 4
+pop temp 0
+push pointer 0
+push this 0
+push constant 1
+add
+push this 1
+push constant 0
+call Character.draw 4
+pop temp 0
+push constant 28
+pop this 0
+push constant 11
+pop this 1
+push constant 1
+pop this 2
+push static 0
+push this 0
+push this 1
+call Grid.get 3
+pop argument 1
+label IF_FALSE4
+push this 0
+pop local 0
+push this 1
+pop local 1
+push this 2
+push constant 1
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push this 0
+push constant 1
+sub
+pop this 0
+label IF_FALSE5
+push this 2
+push constant 2
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push this 1
+push constant 1
+sub
+pop this 1
+label IF_FALSE6
+push this 2
+push constant 4
+eq
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push this 0
+push constant 1
+add
+pop this 0
+label IF_FALSE7
+push this 2
+push constant 8
+eq
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push this 1
+push constant 1
+add
+pop this 1
+label IF_FALSE8
+push this 0
+push constant 1
+and
+push constant 1
+eq
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push pointer 0
+push this 0
+push constant 1
+sub
+push this 1
+push constant 42
+push this 3
+add
+call Character.draw 4
+pop temp 0
+push pointer 0
+push this 0
+push constant 1
+add
+push this 1
+push constant 70
+push this 3
+add
+call Character.draw 4
+pop temp 0
+push constant 0
+return
+label IF_FALSE9
+push this 2
+push constant 1
+eq
+if-goto IF_TRUE10
+goto IF_FALSE10
+label IF_TRUE10
+push pointer 0
+push local 0
+push constant 1
+add
+push local 1
+push constant 0
+call Character.draw 4
+pop temp 0
+label IF_FALSE10
+push this 2
+push constant 4
+eq
+if-goto IF_TRUE11
+goto IF_FALSE11
+label IF_TRUE11
+push pointer 0
+push local 0
+push constant 1
+sub
+push local 1
+push constant 0
+call Character.draw 4
+pop temp 0
+label IF_FALSE11
+push this 2
+push constant 2
+eq
+push this 2
+push constant 8
+eq
+or
+if-goto IF_TRUE12
+goto IF_FALSE12
+label IF_TRUE12
+push pointer 0
+push local 0
+push local 1
+push constant 0
+call Character.draw 4
+pop temp 0
+label IF_FALSE12
+push pointer 0
+push this 0
+push this 1
+push constant 14
+push this 3
+add
+call Character.draw 4
+pop temp 0
+push constant 0
+return
+function Character.drawInit 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 1
+and
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push this 0
+push constant 1
+sub
+push this 1
+push constant 42
+push this 3
+add
+call Character.draw 4
+pop temp 0
+push pointer 0
+push this 0
+push constant 1
+add
+push this 1
+push constant 70
+push this 3
+add
+call Character.draw 4
+pop temp 0
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+push this 0
+push this 1
+push constant 14
+push this 3
+add
+call Character.draw 4
+pop temp 0
+push constant 0
+return
+function Character.draw 2
+push argument 0
+pop pointer 0
+push static 0
+push argument 1
+push argument 2
+call Grid.getDotsImage 3
+pop local 1
+push constant 16384
+push argument 1
+push constant 2
+call Math.divide 2
+add
+push argument 2
+push constant 256
+call Math.multiply 2
+add
+push static 2
+add
+pop local 0
+push local 0
+push constant 32
+add
+push argument 3
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 64
+add
+push argument 3
+push constant 1
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 96
+add
+push argument 3
+push constant 2
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 128
+add
+push argument 3
+push constant 3
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 160
+add
+push argument 3
+push constant 4
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 192
+add
+push argument 3
+push constant 5
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 224
+add
+push argument 3
+push constant 6
+add
+push static 1
+add
+pop pointer 1
+push that 0
+push local 1
+and
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 256
+add
+push argument 3
+push constant 7
+add
+push static 1
+add
+pop pointer 1
+push that 0
+push local 1
+and
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 288
+add
+push argument 3
+push constant 8
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 320
+add
+push argument 3
+push constant 9
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 352
+add
+push argument 3
+push constant 10
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 384
+add
+push argument 3
+push constant 11
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 416
+add
+push argument 3
+push constant 12
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 448
+add
+push argument 3
+push constant 13
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Character.drawExtraLife 2
+push constant 16384
+push argument 0
+push constant 1
+sub
+push constant 768
+call Math.multiply 2
+add
+pop local 1
+push constant 14
+pop local 0
+push argument 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop local 0
+label IF_FALSE0
+push local 1
+push constant 32
+add
+push local 0
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 64
+add
+push local 0
+push constant 1
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 96
+add
+push local 0
+push constant 2
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 128
+add
+push local 0
+push constant 3
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 160
+add
+push local 0
+push constant 4
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 192
+add
+push local 0
+push constant 5
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 224
+add
+push local 0
+push constant 6
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 256
+add
+push local 0
+push constant 7
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 288
+add
+push local 0
+push constant 8
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 320
+add
+push local 0
+push constant 9
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 352
+add
+push local 0
+push constant 10
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 384
+add
+push local 0
+push constant 11
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 416
+add
+push local 0
+push constant 12
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 448
+add
+push local 0
+push constant 13
+add
+push static 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Character.setImages 0
+push constant 98
+call Array.new 1
+pop static 1
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 0
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 1
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 2
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 3
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 4
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 5
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 6
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 7
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 8
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 9
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 10
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 11
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 12
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push constant 14
+call Math.multiply 2
+push constant 13
+add
+push static 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 0
+add
+push static 1
+add
+push constant 961
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 1
+add
+push static 1
+add
+push constant 4081
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 2
+add
+push static 1
+add
+push constant 8185
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 3
+add
+push static 1
+add
+push constant 16189
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 4
+add
+push static 1
+add
+push constant 7997
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 5
+add
+push static 1
+add
+push constant 2047
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 6
+add
+push static 1
+add
+push constant 1023
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 7
+add
+push static 1
+add
+push constant 1023
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 8
+add
+push static 1
+add
+push constant 2047
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 9
+add
+push static 1
+add
+push constant 8189
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 10
+add
+push static 1
+add
+push constant 16381
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 11
+add
+push static 1
+add
+push constant 8185
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 12
+add
+push static 1
+add
+push constant 4081
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push constant 14
+call Math.multiply 2
+push constant 13
+add
+push static 1
+add
+push constant 961
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 0
+add
+push static 1
+add
+push constant 2017
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 1
+add
+push static 1
+add
+push constant 8185
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 2
+add
+push static 1
+add
+push constant 8185
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 3
+add
+push static 1
+add
+push constant 12685
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 4
+add
+push static 1
+add
+push constant 13213
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 5
+add
+push static 1
+add
+push constant 12685
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 6
+add
+push static 1
+add
+push constant 16381
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 7
+add
+push static 1
+add
+push constant 16381
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 8
+add
+push static 1
+add
+push constant 16381
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 9
+add
+push static 1
+add
+push constant 16381
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 10
+add
+push static 1
+add
+push constant 16381
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 11
+add
+push static 1
+add
+push constant 16381
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 12
+add
+push static 1
+add
+push constant 15325
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push constant 14
+call Math.multiply 2
+push constant 13
+add
+push static 1
+add
+push constant 12685
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 0
+add
+push static 1
+add
+push constant 16383
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 1
+add
+push static 1
+add
+push constant 4095
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 2
+add
+push static 1
+add
+push constant 2047
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 3
+add
+push static 1
+add
+push constant 15361
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 4
+add
+push static 1
+add
+push constant 15361
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 5
+add
+push static 1
+add
+push constant 511
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 6
+add
+push static 1
+add
+push constant 511
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 7
+add
+push static 1
+add
+push constant 511
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 8
+add
+push static 1
+add
+push constant 511
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 9
+add
+push static 1
+add
+push constant 1023
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 10
+add
+push static 1
+add
+push constant 1023
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 11
+add
+push static 1
+add
+push constant 2047
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 12
+add
+push static 1
+add
+push constant 4095
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push constant 14
+call Math.multiply 2
+push constant 13
+add
+push static 1
+add
+push constant 16383
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 0
+add
+push static 1
+add
+push constant 8191
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 1
+add
+push static 1
+add
+push constant 2047
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 2
+add
+push static 1
+add
+push constant 2047
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 3
+add
+push static 1
+add
+push constant 29695
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 4
+add
+push static 1
+add
+push constant 25599
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 5
+add
+push static 1
+add
+push constant 29695
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 6
+add
+push static 1
+add
+push constant 1023
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 7
+add
+push static 1
+add
+push constant 1023
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 8
+add
+push static 1
+add
+push constant 1023
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 9
+add
+push static 1
+add
+push constant 1023
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 10
+add
+push static 1
+add
+push constant 1023
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 11
+add
+push static 1
+add
+push constant 1023
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 12
+add
+push static 1
+add
+push constant 9215
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push constant 14
+call Math.multiply 2
+push constant 13
+add
+push static 1
+add
+push constant 29695
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 0
+add
+push static 1
+add
+push constant 4
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 1
+add
+push static 1
+add
+push constant 16
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 2
+add
+push static 1
+add
+push constant 32
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 3
+add
+push static 1
+add
+push constant 64
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 4
+add
+push static 1
+add
+push constant 32
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 5
+add
+push static 1
+add
+push constant 8
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 6
+add
+push static 1
+add
+push constant 4
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 7
+add
+push static 1
+add
+push constant 4
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 8
+add
+push static 1
+add
+push constant 8
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 9
+add
+push static 1
+add
+push constant 32
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 10
+add
+push static 1
+add
+push constant 64
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 11
+add
+push static 1
+add
+push constant 32
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 12
+add
+push static 1
+add
+push constant 16
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push constant 14
+call Math.multiply 2
+push constant 13
+add
+push static 1
+add
+push constant 4
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 0
+add
+push static 1
+add
+push constant 8
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 1
+add
+push static 1
+add
+push constant 32
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 2
+add
+push static 1
+add
+push constant 32
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 3
+add
+push static 1
+add
+push constant 50
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 4
+add
+push static 1
+add
+push constant 52
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 5
+add
+push static 1
+add
+push constant 50
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 6
+add
+push static 1
+add
+push constant 64
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 7
+add
+push static 1
+add
+push constant 64
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 8
+add
+push static 1
+add
+push constant 64
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 9
+add
+push static 1
+add
+push constant 64
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 10
+add
+push static 1
+add
+push constant 64
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 11
+add
+push static 1
+add
+push constant 64
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 12
+add
+push static 1
+add
+push constant 60
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push constant 14
+call Math.multiply 2
+push constant 13
+add
+push static 1
+add
+push constant 50
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function Character.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 0
+push this 1
+push constant 0
+call Character.draw 4
+pop temp 0
+push pointer 0
+push this 0
+push constant 1
+add
+push this 1
+push constant 0
+call Character.draw 4
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

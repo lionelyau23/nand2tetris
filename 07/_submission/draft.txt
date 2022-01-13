@@ -1,0 +1,206 @@
+// set RAM[0] = 256, for SP
+@256
+D=A
+@SP
+M=D
+
+// set RAM[1] = 300, for LCL
+@300
+D=A
+@LCL
+M=D
+
+// push constant i
+@i
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// push segment i, for local, agument, this, that
+@i
+D=A
+@segment
+A=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// pop segment i, for local, agument, this, that
+@i
+D=A
+@segment
+D=D+M
+@SP
+A=M
+M=D
+@SP
+AM=M-1
+D=M
+@SP
+A=M+1
+A=M
+M=D
+
+// push temp i
+@i
+D=A
+@5
+A=D+A
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// pop temp i
+@i
+D=A
+@5
+D=D+A
+@SP
+A=M
+M=D
+@SP
+AM=M-1
+D=M
+@SP
+A=M+1
+A=M
+M=D
+
+// pop static i
+@SP
+AM=M-1
+D=M
+@name.i
+M=D
+
+// push static i
+@name.i
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// pop pointer 0/1
+@SP
+AM=M-1
+D=M
+@THIS/THAT
+A=M
+M=D
+
+// push pointer 0/1
+@THIS/THAT
+A=M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// add
+@SP
+AM=M-1
+D=M
+A=A-1
+M=D+M
+
+// sub
+@SP
+AM=M-1
+D=-M
+A=A-1
+M=D+M
+
+// neg
+@SP
+A=M-1
+M=-M
+
+// eq
+@SP
+AM=M-1
+D=M
+A=A-1
+D=D-M
+@COMPi
+D;JEQ
+@SP
+A=M-1
+M=0
+@ENDi
+0;JMP
+(COMPi)
+@SP
+A=M-1
+M=-1
+(ENDi)
+
+// gt
+@SP
+AM=M-1   // SP=*y, goto y
+D=M     // D=y
+A=A-1   // goto x
+D=M-D   // D=x-y
+@COMPi
+D;JGT
+@SP
+A=M-1
+M=0
+@ENDi
+0;JMP
+(COMPi)
+@SP
+A=M-1
+M=-1
+(ENDi)
+
+// lt
+@SP
+AM=M-1   // SP=*y    // goto y
+D=M     // D=y
+A=A-1   // goto x
+D=D-M   // D=y-x
+@COMPi
+D;JGT
+@SP
+A=M-1
+M=0
+@ENDi
+0;JMP
+(COMPi)
+@SP
+A=M-1
+M=-1
+(ENDi)
+
+
+// and
+@SP
+AM=M-1
+D=M
+A=A-1
+M=D&M
+
+// or
+@SP
+AM=M-1
+D=M
+A=A-1
+M=D|M
+
+// not
+@SP
+A=M-1
+M=!M

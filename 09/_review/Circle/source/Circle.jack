@@ -1,0 +1,100 @@
+/** Implements a graphical circle */
+
+class Circle {
+
+    /** The coordinates and the radius of the circle 
+    */
+    field int x, y, rad;
+
+
+    /** Constructs a new circle */
+    constructor Circle new(int Ax, int Ay, int r) {
+        let x = Ax;
+        let y = Ay;
+        let rad = r;
+        do draw();
+        return this;
+    }
+
+    /** Dispose the circle */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Draw the circle */
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawCircle(x, y, rad);
+        return;
+        
+    }
+
+    /** Erase the circle */
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawCircle(x, y, rad);
+        return;
+    }
+
+    /** Increase the size of the circle by 2 pixels */
+    method void incSize() {
+        if ((((y + rad) < 254 )) & ((x + rad) < 510) & ((y - rad) > 2) & ((x - rad) > 2)) {
+            do erase();
+            let rad = rad + 2;
+            do draw();
+        }
+        return;
+    }
+
+    /** Decrease the size of the circle by 2 pixels */
+    method void decSize() {
+        if (rad > 2) {
+            do erase();
+            let rad = rad - 2;
+            do draw();
+        }
+        return;
+        
+    }
+
+    /** Move the circle up by 10 pixels */
+    method void moveUp() {
+        if ((y - 10 - rad) > 1) {
+            do erase();
+            let y = y - 10;
+            do draw();
+        }
+        return;
+    }
+
+    /** Move the circle down by 10 pixels */
+    method void moveDown() {
+        if ((y + 10 + rad) < 254) {
+            do erase();
+            let y = y + 10;
+            do draw();
+        }
+        return;
+    }
+
+    /** Move the circle Left by 10 pixels */
+    method void moveLeft() {
+        if ((x - 10 - rad) > 1) {
+            do erase();
+            let x = x - 10;
+            do draw();
+        }
+        return;
+    }
+
+    /** Move the circle Right by 10 pixels */
+    method void moveRight() {
+        if ((x + 10 + rad) < 510) {
+            do erase();
+            let x = x + 10;
+            do draw();
+        }
+        return;
+    }
+}

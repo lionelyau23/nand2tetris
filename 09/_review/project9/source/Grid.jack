@@ -1,0 +1,56 @@
+class Grid {
+    field Array grid;           // should this be a field or static? only one instance.
+    //field int dotsLeft;
+
+    constructor Grid new() {
+        var int i;
+        //let dotsLeft = initDots;
+        let grid = Array.new(2048); // 32x64 grid
+
+        let i = 0;
+        while (i < 2048) {
+            let grid[i] = 0;
+            let i = i + 1;
+        }
+
+        return this;
+    }
+
+
+    method int get(int x, int y) {
+        return grid[(y*64)+x];
+    }
+
+
+    method void eat(int x, int y) {
+        let grid[(y*64)+x] = grid[(y*64)+x] - 64;
+        return;
+    }
+
+    //method int getDotsLeft() { return dotsLeft; }
+
+
+    // so hard to explain... used for replacing dots after a character goes by... sorry for all the super complicated logic, trying to optimize enough that it actually runs
+    method int getDotsImage(int x, int y) {
+        var int out;
+        var int i;
+        let out = -1;
+        let i = (y*64)+x;
+        if (~(grid[i] & 64 = 0)) { let out = out - 768; }
+        if (~(grid[i-1] & 64 = 0)) { let out = out - 3; }
+        return out;
+    }
+
+
+    method void set(int i, int val) {
+        let grid[i] = val;
+        return;
+    }
+
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+}

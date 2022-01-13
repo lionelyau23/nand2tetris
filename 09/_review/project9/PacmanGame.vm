@@ -1,0 +1,422 @@
+function PacmanGame.new 0
+push constant 9
+call Memory.alloc 1
+pop pointer 0
+push constant 100
+pop this 6
+call Grid.new 0
+pop this 0
+push this 0
+call Setup.loadGrid 1
+pop temp 0
+push this 0
+call Character.setGrid 1
+pop temp 0
+push constant 520
+push constant 200
+push constant 80
+call Character.setStatics 3
+pop temp 0
+push constant 2
+call Character.setDrawLocOffset 1
+pop temp 0
+call Character.setImages 0
+pop temp 0
+call Setup.drawInitScreen 0
+pop temp 0
+push pointer 0
+return
+function PacmanGame.play 1
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push constant 0
+pop this 7
+label WHILE_EXP0
+push this 7
+push constant 5
+lt
+not
+if-goto WHILE_END0
+push this 7
+push constant 1
+add
+pop this 7
+push this 7
+push constant 0
+call Character.drawExtraLife 2
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+label WHILE_EXP1
+push this 7
+push constant 1
+neg
+gt
+push local 0
+not
+and
+not
+if-goto WHILE_END1
+push pointer 0
+call PacmanGame.round 1
+pop local 0
+push local 0
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 7
+push constant 0
+not
+call Character.drawExtraLife 2
+pop temp 0
+push this 7
+push constant 1
+sub
+pop this 7
+label IF_FALSE0
+goto WHILE_EXP1
+label WHILE_END1
+push constant 9
+push constant 27
+call Output.moveCursor 2
+pop temp 0
+push constant 12
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 10
+push constant 27
+call Output.moveCursor 2
+pop temp 0
+push local 0
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 12
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 89
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 87
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+label IF_FALSE1
+push local 0
+not
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 12
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 71
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 77
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 86
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+label IF_FALSE2
+push constant 11
+push constant 27
+call Output.moveCursor 2
+pop temp 0
+push constant 12
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 0
+return
+function PacmanGame.round 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push constant 28
+push constant 23
+push constant 4
+push constant 0
+push constant 0
+call Character.new 5
+pop this 1
+push constant 28
+push constant 11
+push constant 1
+push constant 0
+not
+push constant 1
+call Character.new 5
+pop this 2
+push constant 26
+push constant 14
+push constant 1
+push constant 0
+not
+push constant 2
+call Character.new 5
+pop this 3
+push constant 28
+push constant 14
+push constant 1
+push constant 0
+not
+push constant 3
+call Character.new 5
+pop this 4
+push constant 30
+push constant 14
+push constant 1
+push constant 0
+not
+push constant 4
+call Character.new 5
+pop this 5
+push pointer 0
+call PacmanGame.waitForKeypress 1
+pop temp 0
+label WHILE_EXP0
+push local 0
+not
+not
+if-goto WHILE_END0
+call Keyboard.keyPressed 0
+pop local 1
+push local 1
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 1
+pop this 8
+label IF_FALSE0
+push this 1
+push this 8
+call Character.tickPacman 2
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+push this 2
+call Character.tickBlinky 1
+pop local 0
+push local 0
+not
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 3
+call Character.tickPinky 1
+pop local 0
+label IF_FALSE2
+push local 0
+not
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 4
+call Character.tickInky 1
+pop local 0
+label IF_FALSE3
+push local 0
+not
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push this 5
+call Character.tickClyde 1
+pop local 0
+label IF_FALSE4
+push this 6
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push this 7
+push constant 0
+gt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 0
+pop local 2
+label WHILE_EXP1
+push local 2
+push constant 4
+lt
+not
+if-goto WHILE_END1
+push this 7
+push constant 0
+not
+call Character.drawExtraLife 2
+pop temp 0
+push this 6
+push constant 3
+call Math.multiply 2
+call Sys.wait 1
+pop temp 0
+push this 7
+push constant 0
+call Character.drawExtraLife 2
+pop temp 0
+push this 6
+push constant 3
+call Math.multiply 2
+call Sys.wait 1
+pop temp 0
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP1
+label WHILE_END1
+push this 1
+call Character.dispose 1
+pop temp 0
+push this 2
+call Character.dispose 1
+pop temp 0
+push this 3
+call Character.dispose 1
+pop temp 0
+push this 4
+call Character.dispose 1
+pop temp 0
+push this 5
+call Character.dispose 1
+pop temp 0
+label IF_FALSE5
+push constant 0
+return
+function PacmanGame.waitForKeypress 0
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+push constant 0
+not
+not
+if-goto WHILE_END0
+call Keyboard.keyPressed 0
+pop this 8
+push this 8
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function PacmanGame.dispose 0
+push argument 0
+pop pointer 0
+push this 1
+call Character.dispose 1
+pop temp 0
+push this 0
+call Grid.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

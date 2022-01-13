@@ -1,0 +1,241 @@
+// Happy Hacker is a simple game like Mastermind
+// It has a realy simple "random" generator with
+// a week uniqueness generator, but i hope, you enjoy it anyway (:
+// Thank you for checking the code and award the nasty 60 points
+class HappyHacker {
+    field int game;     // Save game steps
+    field Array input;  // players input
+    field Array number; // "random" number
+    field int seed;     // "random" seed
+
+    constructor HappyHacker new() {
+        let input = Array.new(3);   // Array for players input
+        let number = Array.new(3);  // Array for "random" numbers
+        let number[0] = -1;         // Init random numbers with -1
+        let number[1] = -1;
+        let number[2] = -1;
+        let seed = 0;               // Init seed
+        let game = 1;               // Init game steps
+
+        // Starts the intro
+        do printIntro();
+
+        // Game loop (9 tries...)
+        while (game < 10) {
+            do getInputs();         // get user inputs
+            do Output.println();    // newline
+            let game = game + 1;    // incrimentd game step
+        }
+
+        // If you need more then 9 tries, you've lost the game...
+        do Output.printString("Sorry, you've lost the game ): The number was: ");
+        do Output.printInt(number[0]);
+        do Output.printInt(number[1]);
+        do Output.printInt(number[2]);
+        do cleanup();
+        return this;
+
+    }
+
+    // Show prompt and get the players input
+    method void getInputs() {
+        var int try;                                    // count players input (max 3)
+
+        let try = 0;                                    // init count
+        do printString();                               // show game prompt
+        while (try < 3) {                               // you can select 3 numbers
+            let input[try] = (getFromKeyboard() - 48);  // get players input (numbers only => getFromKeyboard). 
+                                                        // Subtract 48 from the given charcode 
+                                                        // (i.e. Charcode of number 1 is 49; 49 - 48 = 1)
+            do Output.printInt(input[try]);             // Show players input on screen
+            do Output.printString(" ");                 // concat a space
+            let try = try + 1;                          // increment count
+        }
+        if (getResult()) {                              // check, if you have three ASS
+            do Output.println();                        // if so, you won the game....
+            do Output.printString("Congratulations! You've won the Game!");
+            do cleanup();
+            do Sys.halt();                           // end
+        }
+        return;
+    }
+
+    // Create prompt: show "Game X:"" on screen
+    method void printString() {
+        do Output.printString("Game ");
+        do Output.printInt(game);
+        do Output.printString(": ");
+        return; 
+    }
+
+    // Get a numbert (0 - 9) from the keyboard
+    method char getFromKeyboard() {
+        var char c;                                     // variabel for character
+        let c = 0;                                      // init char
+
+        // The following 6 lines take a pressed key and
+        // wait till you release the key.
+        // So you get the key without output to screen.
+        while (c = 0) {                                 // if no key is pressed
+            let c = Keyboard.keyPressed();              // get charcode from keypress
+        }
+        while (~(Keyboard.keyPressed() = 0)) {          // if key is pressed
+            // do nothing, wait for key release
+        }
+        if (c > 47 & c < 58) {                          // if keycode between 48 and 58 (mean: 0 - 0)
+            return c;                                   // get back c
+        }
+        return getFromKeyboard();                       // else get character again
+    }
+
+    // judges the three numbers entered
+    method boolean getResult() {
+        var int i, n;                                   // init i (incrementor), n and total
+        var int ass, good;                              // Arrays for GOODs and ASS
+
+        let ass = 0;                                    // Init ASS
+        let good = 0;                                   // Init GOOD
+        let i = 0;                                      
+
+        // the following loop checks all
+        // player inputs against the
+        // random numbers.
+        while (i < 3) {                                 // loop 3 times (for 3 player numbers)
+            let n = 0;                                  
+            while (n < 3) {                             // loop 3 times (for 3 random numbers)
+                if (input[i] = number[n]) {             // check, if any player input is identical to any random number
+                    if (i = n) {                        // if yes: is it an ASS? If i and n on same position..
+                        let ass = ass + 1;              // Count one for GOOD
+                    }
+                    else {
+                        let good = good + 1;            // Count one for GOOD
+                    }
+                    let n = 3;                          // break the loop
+                }
+                let n = n + 1;                          // increment n
+            }
+            let i = i + 1;                              // increment i
+        }
+        do Output.printString("  ");
+        do printResult(ass, "ASS");                     // first all ASS are to be shown
+        do printResult(good, "GOOD");                   // then all GOOD
+        if ((ass = 0) & (good = 0)) {                       // or NONE
+            do Output.printString("NONE");
+        }
+        return (ass = 3);                                // true, if you have 3 ASS
+    }
+
+    // Print the result on screen
+    method void printResult(int n, String message) {
+        var int i;                                     
+
+        let i = 0;                                      // init i
+        while (i < n) {                                 // loop n times
+            do Output.printString(message);             // and show result
+            do Output.printString(" ");
+            let i = i + 1;                              // increment
+        }
+        return;
+    }
+
+    // Create three "random" numbers
+    // This function create a sort of (not real) random number
+    // based on the seed
+    method void createRandomNumbers() {
+        var Array seed_parts;                           // part of seed number
+        var int i, factor;              
+
+        // the next few lines break the seed into single integers
+        // i.e. the seed 12345 will break into 1 and 2 and 3 and 4 and 5
+        // the last number of the seed will be the first item of the array
+        let seed_parts = Array.new(5);                  // init Array for seed part (max 5)
+        let i = 4;          
+
+        // for each digit value the following operation is performed 
+        while (i > 0) {                                 // loop 4 times
+            let factor = Main.tenToThePower(i);         // Divide the number by its place value (i.e. If you divide 12345/10000, you get 1)    
+            let seed_parts[i] = seed / factor;          // save this number into seed part
+            let seed = seed - (seed_parts[i] * factor); // Subtract the number of place value from the seed. (if you calculate 12345-10000, 2345 remains)
+            let i = i - 1;                              // increment
+        }
+        let seed_parts[0] = seed;                       // rest of the seed save to seed_parts[0] (never used, btw) (;
+        
+        // The next few lines are to ensure that the 3 numbers to be guessed 
+        // are different (i.e. there are no duplicate numbers). 
+        let i = 0;              
+        while (i < 3) {                                 // loop 3 times
+            let number[i] = getUnique(seed_parts[i]);   // Check uniqueness (=> getUnique())
+            let i = i + 1;                              // increment
+        }
+        let i = 0;
+        return;
+    }
+
+    // The following function checks for each number whether it already exists.
+    method int getUnique(int n) {
+        var int i;
+
+        let i = 0;
+        while (i < 3) {                                 // loop 3 times
+            if (number[i] = n) {                        // if a number already exists              
+                if (n < 5) {
+                    return getUnique((n+1));            // take the next higher number, if the number is smaller then 5
+                }
+                else {
+                    return getUnique((n-1));            // take the next lower number, if the number is higher or equal 5
+                }
+            }
+            let i = i + 1;                              // increment
+        }
+        return n;
+    }
+
+    // Cleanup 
+    method void cleanup() {
+        do input.dispose();
+        do number.dispose();
+        return;
+    }
+
+    method void dispose() {
+        do cleanup();
+        return;
+    }
+
+    // Intro: Shows only the intro text, but also increase the seed
+    method void printIntro() {
+        do Main.printLine("~~~~~~~~~~~~~~~~~~~~~~~");
+        do Main.printLine("Let's play HAPPY HACKER");
+        do Main.printLine("-----------------------");
+        do Main.printLine("Rules: You have to guess a three-digit number.");
+        do Main.printLine("After each attempt you see as result:");
+        do Main.printLine("    NONE => None of the numbers match");
+        do Main.printLine("    GOOD => Correct number, wrong position");
+        do Main.printLine("    ASS  => Correct number and position");
+        do Main.printLine("You have 9 attempts. Good luck!");
+        do Main.printLine("Press any key to start...");
+        do Output.println();
+
+        // The seed increase as long you dont press any key
+        while (Keyboard.keyPressed() = 0) {
+            let seed = seed + 1;
+            if (seed < 0) {         // seed should be positive
+                let seed = 1;
+            }
+        }
+
+        // and increase, as long you pressed the key
+        while (Keyboard.keyPressed() > 0) {
+            let seed = seed + 1;    // seed should be positive
+            if (seed < 0) {
+                let seed = 1;
+            }
+        }
+        // Et voila: We is a simple kind of seed (:
+
+        // Now, create the random numbers (=> createRandomNumbers())
+        do createRandomNumbers();
+        return;
+    }
+
+}

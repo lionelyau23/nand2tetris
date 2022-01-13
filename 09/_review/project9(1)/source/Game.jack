@@ -1,0 +1,246 @@
+class Game {
+
+    field TicTacToe ticTacToe;
+    field Cursor cursor;
+
+    constructor Game new() {
+
+        let ticTacToe = TicTacToe.new(88);
+        let cursor = Cursor.new(1, 1);
+
+        return this;
+    }
+
+    method void drawUI() {
+
+        // draw the text box on the left
+        do Screen.setColor(true);
+        do Screen.drawRectangle(150, 0, 155, 255);
+
+        do Output.moveCursor(0, 0);
+        do Output.printString("A Graphical");
+        do Output.println();
+        do Output.printString("Tic-Tac-Toe Game");
+        do Output.println();
+        do Output.printString("by Lionel Yau");
+        do Output.println();
+        do Output.printString("(2021)");
+
+        do Output.moveCursor(8, 0);
+
+        do Output.printString("Use arrow keys to");
+        do Output.println();
+        do Output.printString("select grid.");
+        do Output.println();
+
+        do Output.println();
+        do Output.printString("Press spacebar to");
+        do Output.println();
+        do Output.printString("confirm and switch");
+        do Output.println();
+        do Output.printString("to next turn.");
+        do Output.println();
+
+        do Output.println();
+        do Output.println();
+        do Output.printString("Turn: ");
+        do Output.printChar(ticTacToe.getTurn());
+        do Output.println();
+
+
+        //draw the blank 3x3 grid
+        do Screen.setColor(true);
+        do Screen.drawRectangle(290, 5, 293, 250);
+        
+        do Screen.setColor(true);
+        do Screen.drawRectangle(373, 5, 376, 250);
+
+        do Screen.setColor(true);
+        do Screen.drawRectangle(210, 85, 456, 88);
+        
+        do Screen.setColor(true);
+        do Screen.drawRectangle(210, 168, 456, 171);
+
+        // draw the cursor
+        do cursor.draw();
+        
+        // // debug UI draw all O
+        // do drawO(0, 0);
+        // do drawO(0, 1);
+        // do drawO(0, 2);
+        // do drawO(1, 0);
+        // do drawO(1, 1);
+        // do drawO(1, 2);
+        // do drawO(2, 0);
+        // do drawO(2, 1);
+        // do drawO(2, 2);
+
+        return;
+    }
+
+    method void run() {
+        var char key;
+        var boolean exit;
+        let exit = false;
+
+        do drawUI();
+
+        while (~exit) {
+            // wait for key press
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+            }
+
+            // q key to quit game
+            if (key = 81) { let exit = true; }
+
+            // move cursor up
+            if (key = 131) { do cursor.moveUp(); }
+
+            // move cursor down
+            if (key = 133) { do cursor.moveDown(); }
+
+            // move cursor left
+            if (key = 130) { do cursor.moveLeft(); }
+
+            // move cursor right
+            if (key = 132) { do cursor.moveRight(); }
+
+            // spacebar
+            if (key = 32) {
+                if (~nextTurn()) { return; }
+            }
+
+            // clean warning text if player move cursor
+            if (~(key = 32)) { do clearWarning(); }
+
+            // wait unit key is released
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+            }
+
+        }
+
+        return;
+    }
+
+    // draw X/O on board for respective turn
+    method void drawTurn(int locX, int locY) {
+        var int aX, aY;
+        var int i;
+
+        let aX = Game.getAX(locX);
+        let aY = Game.getAY(locY);
+
+        // if O's turn, draw O
+        if (ticTacToe.getTurn() = 79) {
+            do Screen.setColor(true);
+            do Screen.drawCircle(aX, aY, 25);
+            do Screen.setColor(false);
+            do Screen.drawCircle(aX, aY, 23);
+        }
+        // if X's turn draw X
+        else {
+            do Screen.setColor(true);
+
+            let i = 0;
+            while (i < 50) {
+                do Screen.drawPixel(aX + 1 - 25 + i, aY - 25 + i);
+                do Screen.drawPixel(aX - 25 + i, aY - 25 + i);
+                do Screen.drawPixel(aX - 1 - 25 + i, aY - 25 + i);
+                let i = i + 1;
+            }
+
+            let i = 0;
+            let aX = aX + 50;
+            while (i < 50) {
+                do Screen.drawPixel(aX + 1 - 25 - i, aY - 25 + i);
+                do Screen.drawPixel(aX - 25 - i, aY - 25 + i);
+                do Screen.drawPixel(aX - 1 - 25 - i, aY - 25 + i);
+                let i = i + 1;
+            }
+        }
+        return;
+    }
+
+    // convert custom grid X value to actual pixel location
+    function int getAX(int gX) {
+        if (gX = 0) { return 250; } 
+        if (gX = 1) { return 333; }
+        else { return 416; }
+    }
+
+    // convert custom grid Y value to actual pixel location
+    function int getAY(int gY) {
+        if (gY = 0) { return 44; }
+        if (gY = 1) { return 127; }
+        else { return 210; }
+    }
+
+    // player the next turn
+    method boolean nextTurn() {
+        var char grid;
+        let grid = ticTacToe.getGrid(cursor.getX(), cursor.getY());
+
+        // if selected grid is not empty, show warning text
+        if (~(grid = 65)) {
+            do Output.moveCursor(18,0);
+            do Output.printString("The selected grid");
+            do Output.println();
+            do Output.printString("had been played.");
+            do Output.println();
+            do Output.printString("Please select");
+            do Output.println();
+            do Output.printString("another grid.");
+
+            return true;
+        }
+
+        do drawTurn(cursor.getX(), cursor.getY());
+        do ticTacToe.play(cursor.getX(), cursor.getY());
+
+        if (ticTacToe.getOver()) {
+            if (~ticTacToe.getWon()) {
+                do Output.moveCursor(16,0);
+                do Output.printString("Draw!     ");
+                do Output.println();
+                do Output.printString("Game Over");
+            }
+            else {
+                do Output.moveCursor(16,0);
+                do Output.printChar(ticTacToe.getTurn());
+                do Output.printString(" Won!     ");
+                do Output.println();
+                do Output.printString("Game Over");
+            }
+
+            return false;
+        } 
+
+        // update the turn's text on left text box if game is not over yet
+        do Output.moveCursor(16, 6);
+        do Output.printChar(ticTacToe.getTurn());
+
+        return true;
+    }
+
+    // clean the warning if player move cursor to another cell
+    method void clearWarning() {
+        do Output.moveCursor(18,0);
+        do Output.printString("                  ");
+        do Output.println();
+        do Output.printString("                  ");
+        do Output.println();
+        do Output.printString("                  ");
+        do Output.println();
+        do Output.printString("                  ");
+        return;
+    }
+
+    method void dispose() {
+        do ticTacToe.dispose();
+        do cursor.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

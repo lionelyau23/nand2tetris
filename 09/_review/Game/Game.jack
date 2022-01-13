@@ -1,0 +1,192 @@
+class Game {
+    field int code;
+    field int bulls;
+    field int cows;
+
+    /** Initializes the game */
+    constructor Game new() {
+        let code = 0;
+        let bulls = 0;
+        let cows = 0;
+        return this;
+    }
+
+    /** Disposes this game */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Breaks up 4-digit int into an array of digits */
+    function Array breakDigits (int inputCode) {
+        var Array digits;
+        var int rest;
+
+        let digits = Array.new(4);
+        
+        let digits[0] = inputCode / 1000;
+        let rest = inputCode - (digits[0] * 1000);
+        let digits[1] = rest / 100;
+        let rest = rest - (digits[1] * 100);
+        let digits[2] = rest / 10;
+        let digits[3] = rest - (digits[2] * 10);
+
+        return digits;
+    }
+
+    /** Returns true if the four digits include a duplicate digit */
+    function boolean isDuplicate(int inputCode) {
+        var Array digits;
+        
+        let digits = Game.breakDigits(inputCode);       
+        
+        if (~(digits[0] = digits[1]) & ~(digits[0] = digits[2]) & ~(digits[0] = digits[3]) & ~(digits[1] = digits[2]) & ~(digits[1] = digits[3]) & ~(digits[2] = digits[3])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /** Generates a 4-digit code pseudorandomly */
+    function int generateCode(int counter) {
+        var int generatedCode;
+        var boolean isValidCode;
+        
+        let generatedCode = counter;
+        let isValidCode = false;
+
+        if (generatedCode < 0) {
+            let generatedCode = -generatedCode;
+        }
+        while (generatedCode > 9999) {
+            let generatedCode = generatedCode / 10;
+        }
+        
+        while (~isValidCode) {
+            let generatedCode = generatedCode * generatedCode;
+
+            if (generatedCode < 0) {
+                let generatedCode = -generatedCode;
+            }
+            while (generatedCode > 9999) {
+                let generatedCode = generatedCode / 10;
+            }
+
+            let isValidCode = ~Game.isDuplicate(generatedCode);
+        }
+
+        return generatedCode;
+    }
+
+    /** Counts bulls and cows based on the user's guess */
+    method void processGuess(int guess) {
+        var Array guessDigits;
+        var Array codeDigits;
+        var int i;
+        var int j;
+
+        let bulls = 0;
+        let cows = 0;
+        let guessDigits = Game.breakDigits(guess);
+        let codeDigits = Game.breakDigits(code);
+        let i = 0;
+
+        while (i < 4) {
+            if (codeDigits[i] = guessDigits[i]) {
+                let bulls = bulls + 1;
+            } else {
+                let j = 0;
+                while (j < 4) {
+                    if (codeDigits[i] = guessDigits[j]) {
+                        let cows = cows + 1;
+                    }
+                    let j = j + 1;
+                }
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Runs the game */
+    method void run() {
+        var char key; // The key currently pressed by the user
+        var boolean startFlag; // Handles transition from the title to the game
+        var boolean exitFlag; // Four bulls and turns into true
+        var int counter; // For the pseudorandom code generation purpose
+        var int guess; // The user's guess
+        var boolean isValidGuess;
+        var int guessCount; // For the screen clearance purpose
+
+        let startFlag = false;
+        let exitFlag = false;
+        let guessCount = 0;
+
+        // The title screen
+        do Output.printString("BULLS AND COWS");
+        do Output.println();
+        do Output.printString("Break the 4-digit code!");
+        do Output.println();
+        do Output.printString("Press Space to start the game: ");
+        do Output.println();
+
+        while (~startFlag) {
+            let counter = counter + 1;
+            let key = Keyboard.keyPressed();
+            if (key = 32) { let startFlag = true; } // Space
+        }
+
+        do Screen.clearScreen();
+        do Output.printString("---------------------------------");
+        do Output.println();
+
+        let code = Game.generateCode(counter);
+
+        while(~exitFlag) {
+            let key = Keyboard.keyPressed();
+
+            let guess = Keyboard.readInt("Enter 4-digit code: ");
+            let guessCount = guessCount + 1;
+            
+            let isValidGuess = true;
+            if (guess < 0) { let isValidGuess = false; }
+            if (guess > 9999) { let isValidGuess = false; }
+            if (Game.isDuplicate(guess)) { let isValidGuess = false; }
+
+            // Clears the screen once every five guesses
+            if (guessCount = 5) {
+                do Screen.clearScreen();
+                let guessCount = 0;
+            }
+
+            if (isValidGuess) {
+                do processGuess(guess);
+
+                do Output.printString("You guessed: ");
+                if (guess < 1000) { do Output.printInt(0); }
+                do Output.printInt(guess);
+                do Output.println();
+
+                do Output.printString("Result: ");                
+                do Output.printInt(bulls);                
+                do Output.printString("bulls, ");                
+                do Output.printInt(cows);                
+                do Output.printString("cows");
+                do Output.println();
+                
+                // Handles a correct guess
+                if (bulls = 4) {
+                    let exitFlag = true;
+                }
+
+            } else {
+                do Output.printString("Invalid value");
+                do Output.println();
+            }
+
+            do Output.println();
+        }
+
+        return;
+    }
+}

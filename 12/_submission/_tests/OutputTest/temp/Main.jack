@@ -1,0 +1,82 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/OutputTest/Main.jack
+
+/** Test program for the OS Output class. */
+class Main {
+
+    /** Outputs the entire character set to the screen using all the
+     *  methods of the Output class. */
+    function void main() {
+        var String s;
+
+        do Test.init();
+
+        do Test.printChar(65);
+        do Test.printChar(66);
+        do Test.printChar(67);
+        do Test.moveCursor(0, 0);
+
+        // do Test.moveCursor(0, 63);
+        // do Test.printChar(66);
+        // do Test.printChar(65);
+
+        // do Test.moveCursor(0, 0);
+        // do Test.printChar(88);
+
+        // do Test.moveCursor(1, 0);
+        // do Test.printChar(66);
+
+        // do Test.moveCursor(22, 0);
+        // do Test.printChar(66);
+
+        // do Test.moveCursor(22, 63);
+        // do Test.printChar(66);
+
+        // do Test.printString("hello world");
+        // do Test.println();
+        // do Test.printInt(1);
+        // do Test.printString("abc");
+
+        // do Test.moveCursor(0,0);
+
+        // do Test.moveCursor(0, 63);
+        // do Test.printChar(66);
+
+        // do Test.moveCursor(1, 0);
+        // do Test.printChar(67);
+
+        // do Test.moveCursor(22, 63);
+        // do Test.printChar(68);
+
+    
+    	let s = String.new(1);
+    	do s.appendChar(String.doubleQuote());
+    
+        // do Test.moveCursor(0, 63);
+        // do Test.printChar(66);
+        // do Test.moveCursor(22, 0);
+        // do Test.printChar(67);
+        // do Test.moveCursor(22, 63);
+        // do Test.printChar(68);
+        // do Test.printChar(65);
+        
+        // do Test.moveCursor(2, 0);
+        // do Test.printString("0123456789");
+        // do Test.println();
+        
+        // do Test.printString("ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz");
+        // do Test.println();
+        
+        // do Test.printString("!#$%&'()*+,-./:;<=>?@[\]^_`{|}~");
+        // do Test.printString(s);
+        // do Test.println();
+        
+        // do Test.printInt(-12345);
+        // do Test.backSpace();
+        // do Test.printInt(6789);
+        
+        return;
+    }
+}

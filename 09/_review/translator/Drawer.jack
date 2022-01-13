@@ -1,0 +1,75 @@
+// This file is part of www.nand2tetris.org
+// by Kejam (Aleksey Prozorov) kejamwork@mail.ru
+// File name: Translator/Drawer.jack
+
+/** Drawer for single number */
+class Drawer {
+    // Create local copy of x and y. Write simple number.
+    // Notice! This class doesn't check input error.
+    function void drawNumber(char key, int x, int y) {
+            var int xc, yc;
+            let xc = x;
+            let yc = y;
+            if (key = 48) { // 0
+                do Screen.drawLine(xc + 0,yc + 0, xc + 5,yc +  0);
+                do Screen.drawLine(xc + 0,yc + 10, xc + 5,yc +  10);
+                do Screen.drawLine(xc + 0,yc + 0, xc + 0,yc +  10);
+                do Screen.drawLine(xc + 5,yc + 0, xc + 5,yc +  10);
+            }
+            if (key = 49) { // 1
+                do Screen.drawLine(xc + 0,yc + 0, xc + 3,yc +  0);
+                do Screen.drawLine(xc + 3,yc + 0, xc + 3,yc +  10);
+                do Screen.drawLine(xc + 0,yc + 10, xc + 6,yc +  10);
+            }
+            if (key = 50) { // 2
+                do Screen.drawLine(xc + 0,yc + 0, xc + 5,yc +  0);
+                do Screen.drawLine(xc + 5,yc + 0, xc + 0,yc +  10);
+                do Screen.drawLine(xc + 0,yc + 10, xc + 5,yc +  10);
+            }
+            if (key = 51) { // 3
+                do Screen.drawLine(xc + 0,yc + 0, xc + 5,yc +  0);
+                do Screen.drawLine(xc + 0,yc + 10, xc + 5,yc +  10);
+                do Screen.drawLine(xc + 5,yc + 0, xc + 5,yc +  10);
+                do Screen.drawLine(xc + 3,yc + 5, xc + 5,yc +  5);
+            }
+            if (key = 52) { // 4
+                do Screen.drawLine(xc + 0,yc + 0, xc + 0,yc +  4);
+                do Screen.drawLine(xc + 0,yc + 4, xc + 5,yc +  4);
+                do Screen.drawLine(xc + 5,yc + 0, xc + 5,yc +  10);
+            }
+            if (key = 53) { // 5
+                do Screen.drawLine(xc + 0,yc + 0, xc + 5,yc +  0);
+                do Screen.drawLine(xc + 0,yc + 0, xc + 0,yc +  4);
+                do Screen.drawLine(xc + 0,yc + 4, xc + 5,yc +  4);
+                do Screen.drawLine(xc + 5,yc + 10, xc + 5,yc +  4);
+                do Screen.drawLine(xc + 0,yc + 10, xc + 5,yc +  10);
+            }
+            if (key = 54) { // 6
+                do Screen.drawLine(xc + 4,yc + 0, xc + 0,yc +  5);
+                do Screen.drawLine(xc + 0,yc + 5, xc + 5,yc +  5);
+                do Screen.drawLine(xc + 0,yc + 5, xc + 0,yc +  10);
+                do Screen.drawLine(xc + 5,yc + 5, xc + 5,yc +  10);
+                do Screen.drawLine(xc + 0,yc + 10, xc + 5,yc +  10);
+            }
+            if (key = 55) { // 7
+                do Screen.drawLine(xc + 0,yc + 0, xc + 5,yc +  0);
+                do Screen.drawLine(xc + 5,yc + 0, xc + 0,yc +  10);
+                do Screen.drawLine(xc + 1,yc + 5, xc + 5,yc +  5);
+            }
+            if (key = 56) { // 8
+                do Screen.drawLine(xc + 0,yc + 0, xc + 5,yc +  0);
+                do Screen.drawLine(xc + 0,yc + 10, xc + 5,yc +  10);
+                do Screen.drawLine(xc + 0,yc + 0, xc + 0,yc +  10);
+                do Screen.drawLine(xc + 5,yc + 0, xc + 5,yc +  10);
+                do Screen.drawLine(xc + 0,yc + 5, xc + 5,yc +  5);
+            }
+            if (key = 57) { // 9
+                do Screen.drawLine(xc + 0,yc + 0, xc + 5,yc +  0);
+                do Screen.drawLine(xc + 0,yc + 0, xc + 0,yc +  5);
+                do Screen.drawLine(xc + 0,yc + 5, xc + 5,yc +  5);
+                do Screen.drawLine(xc + 5,yc + 0, xc + 5,yc +  5);
+                do Screen.drawLine(xc + 5,yc + 5, xc + 0,yc +  10);
+            }
+            return;
+       }
+}

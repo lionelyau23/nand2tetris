@@ -1,0 +1,60 @@
+/** Implements a Circle game */
+
+class CircleGame {
+
+    field Circle circle; // Circle of the game
+    field int direction; // the circle's current direction: 0=none, 1=up, 2=down, 3=left, 4=right
+
+    /** Constructs a new circle game */
+    constructor CircleGame new() {
+        let circle = Circle.new(30, 30, 30);
+        let direction = 0;
+        return this;
+    }
+
+    /** Disposes the game */
+    method void dispose() {
+        do circle.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Move the circle in the current direction */
+    method void moveCircle() {
+        if (direction = 1) { do circle.moveUp(); }
+        if (direction = 2) { do circle.moveDown(); }
+        if (direction = 3) { do circle.moveLeft(); }
+        if (direction = 4) { do circle.moveRight(); }
+
+        return;
+    }
+
+    /** Run the game */
+    method void run() {
+        var char key; // key pressed by user
+        var boolean exit;
+        let exit = false;
+
+        while (~exit) {
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+            }
+            if (key = 81) { let exit = true;}       //q
+            if (key = 90) { do circle.decSize(); }  //z
+            if (key = 88) { do circle.incSize(); }  //x
+            if (key = 131) { let direction = 1; }   //up
+            if (key = 133) { let direction = 2; }   //down
+            if (key = 130) { let direction = 3; }   //left
+            if (key = 132) { let direction = 4; }   //right
+            
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+                do moveCircle();
+                let direction = 0;
+            }         
+        }
+        return;
+    }
+
+
+}

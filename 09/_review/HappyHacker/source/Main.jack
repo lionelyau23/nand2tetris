@@ -1,0 +1,37 @@
+class Main {
+    
+    function void main() {
+        var HappyHakcer happyHacker;
+        let happyHacker = HappyHacker.new();
+        return;
+    }
+
+    // Print a String and concat a new line
+    function void printLine(String str) {
+        do Output.printString(str);
+        do Output.println();
+        return;
+    }
+
+    // Calculates the n-th power of 10
+    function int tenToThePower(int n) {
+        var int i, p;
+
+        let i = 10;
+        let p = 1;
+        while (p < n) {
+            let i = i * 10;
+            let p = p + 1;
+        }
+        return i;
+    }
+
+    // tmp funtion for debug reason, not used in finished application
+    function void _(String varname, int value) {
+        do Output.printString(varname);
+        do Output.printString(": ");
+        do Output.printInt(value);
+        do Output.println();
+        return;
+    }
+}

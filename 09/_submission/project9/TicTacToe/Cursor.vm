@@ -1,0 +1,267 @@
+function Cursor.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push pointer 0
+return
+function Cursor.draw 2
+push argument 0
+pop pointer 0
+push this 0
+call Game.getAX 1
+push constant 38
+sub
+pop local 0
+push this 1
+call Game.getAY 1
+push constant 37
+sub
+pop local 1
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push local 0
+push local 1
+push local 0
+push constant 10
+add
+push local 1
+push constant 10
+add
+call Screen.drawRectangle 4
+pop temp 0
+push local 0
+push constant 66
+add
+pop local 0
+push local 0
+push local 1
+push local 0
+push constant 10
+add
+push local 1
+push constant 10
+add
+call Screen.drawRectangle 4
+pop temp 0
+push local 1
+push constant 66
+add
+pop local 1
+push local 0
+push local 1
+push local 0
+push constant 10
+add
+push local 1
+push constant 10
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+call Game.getAX 1
+push constant 38
+sub
+pop local 0
+push local 0
+push local 1
+push local 0
+push constant 10
+add
+push local 1
+push constant 10
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Cursor.erase 2
+push argument 0
+pop pointer 0
+push this 0
+call Game.getAX 1
+push constant 38
+sub
+pop local 0
+push this 1
+call Game.getAY 1
+push constant 37
+sub
+pop local 1
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push local 0
+push local 1
+push local 0
+push constant 10
+add
+push local 1
+push constant 10
+add
+call Screen.drawRectangle 4
+pop temp 0
+push local 0
+push constant 66
+add
+pop local 0
+push local 0
+push local 1
+push local 0
+push constant 10
+add
+push local 1
+push constant 10
+add
+call Screen.drawRectangle 4
+pop temp 0
+push local 1
+push constant 66
+add
+pop local 1
+push local 0
+push local 1
+push local 0
+push constant 10
+add
+push local 1
+push constant 10
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+call Game.getAX 1
+push constant 38
+sub
+pop local 0
+push local 0
+push local 1
+push local 0
+push constant 10
+add
+push local 1
+push constant 10
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Cursor.moveUp 0
+push argument 0
+pop pointer 0
+push this 1
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+call Cursor.erase 1
+pop temp 0
+push this 1
+push constant 1
+sub
+pop this 1
+push pointer 0
+call Cursor.draw 1
+pop temp 0
+push constant 0
+return
+function Cursor.moveDown 0
+push argument 0
+pop pointer 0
+push this 1
+push constant 2
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+call Cursor.erase 1
+pop temp 0
+push this 1
+push constant 1
+add
+pop this 1
+push pointer 0
+call Cursor.draw 1
+pop temp 0
+push constant 0
+return
+function Cursor.moveLeft 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+call Cursor.erase 1
+pop temp 0
+push this 0
+push constant 1
+sub
+pop this 0
+push pointer 0
+call Cursor.draw 1
+pop temp 0
+push constant 0
+return
+function Cursor.moveRight 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 2
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+call Cursor.erase 1
+pop temp 0
+push this 0
+push constant 1
+add
+pop this 0
+push pointer 0
+call Cursor.draw 1
+pop temp 0
+push constant 0
+return
+function Cursor.getX 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Cursor.getY 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Cursor.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

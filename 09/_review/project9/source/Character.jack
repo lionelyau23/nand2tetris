@@ -1,0 +1,492 @@
+class Character {
+    static Grid grid;                   // 32x64 grid defines the entire maze
+    static Array images;                // 6 x 14-int images; 0=repair, 1/3/5=Pacman C/L/R; 2/4/6=Ghost C/L/R; each int is a row, each array is 14 rows tall
+    static int drawLocOffset;           // need to offset characters to the right to line up with board offset
+    static int counter;                 // game counter, starts at 0 and goes with each pacman tick
+    static int chaseMark;               // game starts in scatter mode. When the counter hits this number it switches to chase mode
+    static int scatterMark;             // when the counter hits this number the game switches back to scatter mode. This counter is set back to zero *after* one full game tick at this value
+    static int pacmanX;                 // so ghosts know where pacman is
+    static int pacmanY;
+    static int blinkyX;                 // inky wants to know where Blinky is too.
+    static int blinkyY;
+    static int pacmanDir;
+    static int dotsLeft;
+    field int xLoc;                     // grid locations, not screen
+    field int yLoc;
+    field int direction;                // 1=left; 2=up; 4=right; 8=down
+    field int charTypeImgOffset;        // pacman = 0, ghost = 14, used as image offset
+    field int whoAmI;
+
+
+
+    constructor Character new(int startX, int startY, int startDirection, boolean isGhost, int whoIsThis) {
+        let xLoc = startX;
+        let yLoc = startY;
+        let direction = startDirection;
+        let charTypeImgOffset = 14;                         // assume it's ghost
+        if (~isGhost) {
+            let charTypeImgOffset = 0;                     // unless it's a pacman!
+            let counter = 0;                                // pacman is responsible for the counter.
+        }
+
+        let whoAmI = whoIsThis;                             // helpful for debugging
+
+        do drawInit();
+
+        return this;
+    }
+
+    function void setGrid(Grid g) { let grid = g; return; }
+
+    function void setDrawLocOffset(int offset) { let drawLocOffset = offset; return; }
+
+    function void setStatics(int dotsAtStart, int scatter, int chase) {
+        let dotsLeft = dotsAtStart;
+        let scatterMark = scatter;
+        let chaseMark = chase;
+        let counter = 0;
+        return;
+    }
+
+
+    // sets 'direction' to point to a valid next location, then call move()
+    method boolean tickPacman(int key) {
+        var int directionRequest;
+        var int thisGridVal;
+
+        let counter = counter + 1;
+        if (counter > scatterMark) { let counter = 0; }
+
+        let thisGridVal = grid.get(xLoc, yLoc);
+        if (~((thisGridVal & 64) = 0)) {            // there's a dot here
+            do grid.eat(xLoc, yLoc);
+            let dotsLeft = dotsLeft - 1;
+            if (dotsLeft = 0) { return true; }       // pacman won!
+        }
+
+        if (key = 130) { let directionRequest = 1; }
+        if (key = 131) { let directionRequest = 2; }
+        if (key = 132) { let directionRequest = 4; }
+        if (key = 133) { let directionRequest = 8; }
+
+        let directionRequest = thisGridVal & directionRequest;
+        if (~(directionRequest = 0)) { let direction = directionRequest; }      // if arrow key and grid agree on new direction, set it
+
+        let direction = direction & thisGridVal;
+
+        do move(thisGridVal);
+        let pacmanX = xLoc;
+        let pacmanY = yLoc;
+        let pacmanDir = direction;
+        return false;
+    }
+
+
+    method boolean tickBlinky() {
+        if (counter < chaseMark) { return tickGhost(53,0); }        // scatter mode!
+        return tickGhost(pacmanX, pacmanY);
+    }
+    method boolean tickPinky() {
+        if (dotsLeft > 515) { return false; }                       // still in ghost box
+        if (counter < chaseMark) { return tickGhost(3,0); }         // scatter mode!
+
+        // pinky's target is 4 squares in front of pacman
+        if (pacmanDir = 1) { return tickGhost (pacmanX - 4, pacmanY); } // pacman going left
+        if (pacmanDir = 2) { return tickGhost (pacmanX, pacmanY - 4); } // up
+        if (pacmanDir = 4) { return tickGhost (pacmanX + 4, pacmanY); } // right
+        return tickGhost(pacmanX, pacmanY + 4); // down
+    }
+    method boolean tickInky() {
+        var int twoInFrontX;
+        var int twoInFrontY;
+        var int targetX;
+        var int targetY;
+
+        if (dotsLeft > 480) { return false; }                       // still in ghost box
+        if (counter < chaseMark) { return tickGhost(55,31); }       // scatter mode!
+
+        // inky's target is based on a spot two in front of pacman and Blinky's location
+        if (pacmanDir = 1) { let twoInFrontX = pacmanX - 2; let twoInFrontY = pacmanY; } // left
+        if (pacmanDir = 2) { let twoInFrontX = pacmanX; let twoInFrontY = pacmanY - 2; } // up
+        if (pacmanDir = 4) { let twoInFrontX = pacmanX + 2; let twoInFrontY = pacmanY; } // right
+        if (pacmanDir = 8) { let twoInFrontX = pacmanX; let twoInFrontY = pacmanY + 2; } // down
+
+        let targetX = twoInFrontX + twoInFrontX - blinkyX;
+        let targetY = twoInFrontY + twoInFrontY - blinkyY;
+
+        return tickGhost(targetX, targetY);
+    }
+    method boolean tickClyde() {
+        if (dotsLeft > 340) { return false; }                       // still in ghost box
+        if (counter < chaseMark) { return tickGhost(1,31); }        // scatter mode!
+
+        // if more than 8 tiles away, target pacman directly. Else retreat to corner like scatter mode
+        if ((distance(pacmanX, xLoc) + distance(pacmanY, yLoc)) > 8 ) {
+            return tickGhost(pacmanX, pacmanY);
+        }
+        return tickGhost(1,31);
+    }
+
+    method int distance(int a, int b) {
+        var int absA;
+        var int absB;
+        let absA = a;
+        let absB = b;
+        if (a < 0) { let absA = -a; }
+        if (b < 0) { let absB = -b; }
+        if (a > b) { return a - b; }
+        return b - a;
+    }
+
+
+    method boolean tickGhost(int targetX, int targetY) {                // input is the target tile for this ghost
+        var int thisGridVal;
+        var int oppositeDirection;
+        var int dirOptions;
+
+        let thisGridVal = grid.get(xLoc, yLoc);
+
+        if (direction = 1) { let oppositeDirection = 4; }
+        if (direction = 4) { let oppositeDirection = 1; }
+        if (direction = 2) { let oppositeDirection = 8; }
+        if (direction = 8) { let oppositeDirection = 2; }
+
+        if ((counter = chaseMark) | (counter = scatterMark)) {          // reverse directions when changing mode
+            if ((thisGridVal & oppositeDirection)=0) {
+                do Sys.error(1232);                                     // not sure when this could happen, but it'd be bad.
+            }           // let's not bother with the rest of the code, just check for a winner, move, and get out
+            let direction = oppositeDirection;
+            if ((xLoc = pacmanX) & (yLoc = pacmanY)) { return true; }           // ghost wins!
+            do move(thisGridVal);
+            if ((xLoc = pacmanX) & (yLoc = pacmanY)) { return true; }           // ghost wins!
+            return false;
+        }
+
+        let dirOptions = (thisGridVal & 3840) / 256;
+
+        if (dirOptions = 0) {                                        // this tile is not a decision point
+            if (~((thisGridVal & 16) = 16)) {                              // if we're at a jump point just keep the direction as is
+                let direction = (thisGridVal & 15) & (~oppositeDirection);    // hopefully this results in a valid direction! we're assuming there are exactly two valid directions, and we want the one we didn't just come from
+            }
+            if ((thisGridVal & 32) = 32) { let direction = 1; }           // keep things from breaking when trying to leave the ghost box (lazy bugfix)
+        }
+        if (~(dirOptions = 0)) {                                          // gosh I wish this language had 'else'
+            let dirOptions = dirOptions & (~oppositeDirection);           // no backtracking!
+            let direction = chaseTile(dirOptions, targetX - xLoc, targetY - yLoc);
+        }
+
+        if (~((direction = 1) | (direction = 2) | (direction = 4) | (direction = 8))) {
+            do Sys.error(1233);        // complicated direction calculation, let's make sure it's at least one of the four directions
+        }
+
+        if ((xLoc = pacmanX) & (yLoc = pacmanY)) { return true; }           // ghost wins!
+        do move(thisGridVal);
+        if ((xLoc = pacmanX) & (yLoc = pacmanY)) { return true; }           // ghost wins!
+        return false;
+    }
+
+
+    method int chaseTile(int dirOptions, int xDelta, int yDelta) {
+        if (xDelta = 0) {       // target is here or directly up or down
+            if (yDelta = 0) {   // on target, so it's an all-way tie
+                if ((2 & dirOptions) = 2) { return 2; }  // up       // like original pacman, ties are broken by up > left > down (thus never right)
+                if ((1 & dirOptions) = 1) { return 1; }  // left
+                if ((8 & dirOptions) = 8) { return 8; }  // down
+            }
+            if (yDelta < 0) { if ((2 & dirOptions) = 2) { return 2; }} // below target, try going up
+            if ((8 & dirOptions) = 8) { return 8; } // not on or below target, so we must be above; try going down
+            if ((1 & dirOptions) = 1) { return 1; } // up and down weren't options, tie-breaker is left
+            if ((4 & dirOptions) = 4) { return 4; } // then right
+            do Sys.error(1234);  // oops.
+        }
+        if (yDelta = 0) {
+            if (xDelta < 0) { if ((1 & dirOptions) = 1) { return 1; }} // directly right of target, try going left
+            if ((4 & dirOptions) = 4) { return 4; } // left of target, try right
+            if ((2 & dirOptions) = 2) { return 2; } // left and right weren't options, try up
+            if ((8 & dirOptions) = 8) { return 8; } // then down
+            do Sys.error(1235);  // oops.
+        }
+        if (xDelta < 0) {           // we're to the right of the target.
+            if (yDelta < 0) {       // we're below and to the right of the target (want to go up or left)
+                if (xDelta < yDelta) {      // both are negative, so this one means xDelta has a bigger magnitude
+                    if ((1 & dirOptions) = 1) { return 1; } // so try left first
+                    if ((2 & dirOptions) = 2) { return 2; } // then up
+                    if ((8 & dirOptions) = 8) { return 8; } // then down
+                    do Sys.error(1236);  // oops.
+                }                           // yDelta has a bigger magnitude
+                if ((2 & dirOptions) = 2) { return 2; } // so try up first
+                if ((1 & dirOptions) = 1) { return 1; } // then left
+                if ((4 & dirOptions) = 4) { return 4; } // then right
+                do Sys.error(1237);  // oops.
+            }
+            // we're above and to the right of the target (want to go down or left). also, xDelta is negative and yDelta is positive
+            if (-xDelta > yDelta) {      // x is negative, y is positive, so this tells us xDelta has a bigger magnitude
+                if ((1 & dirOptions) = 1) { return 1; } // so try left first
+                if ((8 & dirOptions) = 8) { return 8; } // then down
+                if ((2 & dirOptions) = 2) { return 2; } // then up
+                do Sys.error(1238);  // oops.
+            }                           // yDelta has a bigger magnitude
+            if ((8 & dirOptions) = 8) { return 8; } // so try down first
+            if ((1 & dirOptions) = 1) { return 1; } // then left
+            if ((4 & dirOptions) = 4) { return 4; } // then right
+            do Sys.error(1239);  // oops.
+        }
+        // xDelta is positive. yDelta is not zero.
+        if (yDelta < 0) {       // we're below and to the left of the target (want to go up or right)
+            if (xDelta > -yDelta) {      // yDelta is negative, so this means xDelta has a bigger magnitude
+                if ((4 & dirOptions) = 4) { return 4; } // so try right first
+                if ((2 & dirOptions) = 2) { return 2; } // then up
+                if ((8 & dirOptions) = 8) { return 8; } // then down
+                do Sys.error(1240);  // oops.
+            }                           // yDelta has a bigger magnitude
+            if ((2 & dirOptions) = 2) { return 2; } // so try up first
+            if ((4 & dirOptions) = 4) { return 4; } // then right
+            if ((1 & dirOptions) = 1) { return 1; } // then left
+            do Sys.error(1241);  // oops.
+        }
+        // we're above and to the left of the target (want to go down or right). also, xDelta and yDelta are both positive
+        if (xDelta > yDelta) {      // x is positive, y is positive, so this tells us xDelta has a bigger magnitude
+            if ((4 & dirOptions) = 4) { return 4; } // so try right first
+            if ((8 & dirOptions) = 8) { return 8; } // then down
+            if ((2 & dirOptions) = 2) { return 2; } // then up
+            do Sys.error(1242);  // oops.
+        }                           // yDelta has a bigger magnitude
+        if ((8 & dirOptions) = 8) { return 8; } // so try down first
+        if ((4 & dirOptions) = 4) { return 4; } // then right
+        if ((1 & dirOptions) = 1) { return 1; } // then left
+        do Sys.error(1243);  // oops.
+        return 0;   // just so the compiler doesn't complain
+    }
+
+
+    method void move(int oldGridVal) {
+        var int oldX;
+        var int oldY;
+
+        if ((oldGridVal & 16) = 16) {       // handle jump first
+            do draw (xLoc, yLoc, 0);
+            do draw (xLoc+1, yLoc, 0);
+            if (~((xLoc = 1) | (xLoc = 55))) { do Sys.error(1244); }   // jump columns are hard-coded, need to change them here if the map changes
+            if (xLoc = 1) { let xLoc = 54; }
+            if (xLoc = 55) { let xLoc = 2; }
+        }
+
+        if ((oldGridVal & 32) = 32) {       // if ghost is in ghost box, let it out
+            do draw (xLoc, yLoc, 0);
+            do draw (xLoc+1, yLoc, 0);
+            let xLoc = 28;                  // hardcoded ghost start position - should be the same as Blinky's start position
+            let yLoc = 11;
+            let direction = 1;
+            let oldGridVal = grid.get(xLoc, yLoc);
+        }
+
+        let oldX = xLoc;
+        let oldY = yLoc;
+
+        if (direction = 1) { let xLoc = xLoc - 1; }
+        if (direction = 2) { let yLoc = yLoc - 1; }
+        if (direction = 4) { let xLoc = xLoc + 1; }
+        if (direction = 8) { let yLoc = yLoc + 1; }
+
+
+        if ((xLoc & 1) = 1) {       // if we're on an odd-numbered column, write a left image and a right image
+            do draw((xLoc-1), yLoc, 42+charTypeImgOffset);     // draw left image
+            do draw((xLoc+1), yLoc, 70+charTypeImgOffset);     // draw right image
+            return;
+        }
+        if (direction = 1) { do draw(oldX+1, oldY, 0); } // going left
+        if (direction = 4) { do draw(oldX-1, oldY, 0); } // going right
+        if ((direction = 2) | (direction = 8)) { do draw(oldX, oldY, 0); } // going up or down
+        do draw(xLoc, yLoc, 14+charTypeImgOffset);     // draw new character
+        return;
+    }
+
+
+    method void drawInit() {
+        if ((xLoc & 1) = 1) {       // if we're on an odd-numbered column, write a left image and a right image
+            do draw((xLoc-1), yLoc, (42+charTypeImgOffset));     // draw left image
+            do draw((xLoc+1), yLoc, (70+charTypeImgOffset));     // draw right image
+            return;
+        }
+        do draw(xLoc, yLoc, 14+charTypeImgOffset);     // draw new character
+        return;
+    }
+
+
+    method void draw(int x, int y, int imgOffset) {
+        var int memAddress;
+        var int dots;
+        let dots = grid.getDotsImage(x, y);
+    	let memAddress = 16384 + (x/2) + (y*256) + drawLocOffset;
+
+        do Memory.poke(memAddress+32, images[imgOffset]);
+        do Memory.poke(memAddress+64, images[imgOffset+1]);
+        do Memory.poke(memAddress+96, images[imgOffset+2]);
+        do Memory.poke(memAddress+128, images[imgOffset+3]);
+        do Memory.poke(memAddress+160, images[imgOffset+4]);
+        do Memory.poke(memAddress+192, images[imgOffset+5]);
+        do Memory.poke(memAddress+224, (images[imgOffset+6] & dots));
+        do Memory.poke(memAddress+256, (images[imgOffset+7] & dots));
+        do Memory.poke(memAddress+288, images[imgOffset+8]);
+        do Memory.poke(memAddress+320, images[imgOffset+9]);
+        do Memory.poke(memAddress+352, images[imgOffset+10]);
+        do Memory.poke(memAddress+384, images[imgOffset+11]);
+        do Memory.poke(memAddress+416, images[imgOffset+12]);
+        do Memory.poke(memAddress+448, images[imgOffset+13]);
+
+        return;
+    }
+
+
+    function void drawExtraLife(int index, boolean remove) {
+        var int imgOffset;
+        var int memAddress;
+    	let memAddress = 16384 + ((index-1)*768);
+        let imgOffset = 14;
+        if (remove) { let imgOffset = 0; }
+
+        do Memory.poke(memAddress+32, images[imgOffset]);
+        do Memory.poke(memAddress+64, images[imgOffset+1]);
+        do Memory.poke(memAddress+96, images[imgOffset+2]);
+        do Memory.poke(memAddress+128, images[imgOffset+3]);
+        do Memory.poke(memAddress+160, images[imgOffset+4]);
+        do Memory.poke(memAddress+192, images[imgOffset+5]);
+        do Memory.poke(memAddress+224, images[imgOffset+6]);
+        do Memory.poke(memAddress+256, images[imgOffset+7]);
+        do Memory.poke(memAddress+288, images[imgOffset+8]);
+        do Memory.poke(memAddress+320, images[imgOffset+9]);
+        do Memory.poke(memAddress+352, images[imgOffset+10]);
+        do Memory.poke(memAddress+384, images[imgOffset+11]);
+        do Memory.poke(memAddress+416, images[imgOffset+12]);
+        do Memory.poke(memAddress+448, images[imgOffset+13]);
+
+        return;
+    }
+
+
+    function void setImages() {
+        let images = Array.new(98);     // 7x14
+
+        // 0 = repair (all black)
+        let images[(0*14)+0] = -1;
+        let images[(0*14)+1] = -1;
+        let images[(0*14)+2] = -1;
+        let images[(0*14)+3] = -1;
+        let images[(0*14)+4] = -1;
+        let images[(0*14)+5] = -1;
+        let images[(0*14)+6] = -1;
+        let images[(0*14)+7] = -1;
+        let images[(0*14)+8] = -1;
+        let images[(0*14)+9] = -1;
+        let images[(0*14)+10] = -1;
+        let images[(0*14)+11] = -1;
+        let images[(0*14)+12] = -1;
+        let images[(0*14)+13] = -1;
+
+        // 1 = pacman centered = offset 14
+        let images[(1*14)+0] = -961;
+        let images[(1*14)+1] = -4081;
+        let images[(1*14)+2] = -8185;
+        let images[(1*14)+3] = -16189;
+        let images[(1*14)+4] = -7997;
+        let images[(1*14)+5] = -2047;
+        let images[(1*14)+6] = -1023;
+        let images[(1*14)+7] = -1023;
+        let images[(1*14)+8] = -2047;
+        let images[(1*14)+9] = -8189;
+        let images[(1*14)+10] = -16381;
+        let images[(1*14)+11] = -8185;
+        let images[(1*14)+12] = -4081;
+        let images[(1*14)+13] = -961;
+
+        // 2 = ghost centered = offset 28
+        let images[(2*14)+0] = -2017;
+        let images[(2*14)+1] = -8185;
+        let images[(2*14)+2] = -8185;
+        let images[(2*14)+3] = -12685;
+        let images[(2*14)+4] = -13213;
+        let images[(2*14)+5] = -12685;
+        let images[(2*14)+6] = -16381;
+        let images[(2*14)+7] = -16381;
+        let images[(2*14)+8] = -16381;
+        let images[(2*14)+9] = -16381;
+        let images[(2*14)+10] = -16381;
+        let images[(2*14)+11] = -16381;
+        let images[(2*14)+12] = -15325;
+        let images[(2*14)+13] = -12685;
+
+        // 3 = pacman left = offset 42
+        let images[(3*14)+0] = 16383;
+        let images[(3*14)+1] = 4095;
+        let images[(3*14)+2] = 2047;
+        let images[(3*14)+3] = -15361;
+        let images[(3*14)+4] = -15361;
+        let images[(3*14)+5] = 511;
+        let images[(3*14)+6] = 511;
+        let images[(3*14)+7] = 511;
+        let images[(3*14)+8] = 511;
+        let images[(3*14)+9] = 1023;
+        let images[(3*14)+10] = 1023;
+        let images[(3*14)+11] = 2047;
+        let images[(3*14)+12] = 4095;
+        let images[(3*14)+13] = 16383;
+
+        // 4 = ghost left = offset 56
+        let images[(4*14)+0] = 8191;
+        let images[(4*14)+1] = 2047;
+        let images[(4*14)+2] = 2047;
+        let images[(4*14)+3] = 29695;
+        let images[(4*14)+4] = 25599;
+        let images[(4*14)+5] = 29695;
+        let images[(4*14)+6] = 1023;
+        let images[(4*14)+7] = 1023;
+        let images[(4*14)+8] = 1023;
+        let images[(4*14)+9] = 1023;
+        let images[(4*14)+10] = 1023;
+        let images[(4*14)+11] = 1023;
+        let images[(4*14)+12] = 9215;
+        let images[(4*14)+13] = 29695;
+
+        // 5 = pacman right = offset 70
+        let images[(5*14)+0] = -4;
+        let images[(5*14)+1] = -16;
+        let images[(5*14)+2] = -32;
+        let images[(5*14)+3] = -64;
+        let images[(5*14)+4] = -32;
+        let images[(5*14)+5] = -8;
+        let images[(5*14)+6] = -4;
+        let images[(5*14)+7] = -4;
+        let images[(5*14)+8] = -8;
+        let images[(5*14)+9] = -32;
+        let images[(5*14)+10] = -64;
+        let images[(5*14)+11] = -32;
+        let images[(5*14)+12] = -16;
+        let images[(5*14)+13] = -4;
+
+        // 6 = ghost right = offset 84
+        let images[(6*14)+0] = -8;
+        let images[(6*14)+1] = -32;
+        let images[(6*14)+2] = -32;
+        let images[(6*14)+3] = -50;
+        let images[(6*14)+4] = -52;
+        let images[(6*14)+5] = -50;
+        let images[(6*14)+6] = -64;
+        let images[(6*14)+7] = -64;
+        let images[(6*14)+8] = -64;
+        let images[(6*14)+9] = -64;
+        let images[(6*14)+10] = -64;
+        let images[(6*14)+11] = -64;
+        let images[(6*14)+12] = -60;
+        let images[(6*14)+13] = -50;
+
+        return;
+    }
+
+
+    method void dispose() {
+        do draw (xLoc, yLoc, 0);
+        do draw (xLoc+1, yLoc, 0);
+        do Memory.deAlloc(this);
+        return;
+    }
+}

@@ -1,0 +1,8 @@
+function Main.main 0
+push constant 1
+neg
+push constant 2
+call Output.printInt 2
+pop temp 0
+push constant 0
+return

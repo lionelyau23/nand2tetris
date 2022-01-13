@@ -1,0 +1,108 @@
+class Cursor {
+    field int cursorX, cursorY;
+
+    constructor Cursor new(int locX, int locY) {
+
+        let cursorX = locX;
+        let cursorY = locY;
+
+        return this;
+    }
+
+    method void draw() {
+        var int tempX, tempY;
+        let tempX = Game.getAX(cursorX) - 38;
+        let tempY = Game.getAY(cursorY) - 37;
+
+        do Screen.setColor(true);
+        do Screen.drawRectangle(tempX, tempY, tempX + 10, tempY + 10);
+
+        let tempX = tempX + 66;
+        do Screen.drawRectangle(tempX, tempY, tempX + 10, tempY + 10);
+
+        let tempY = tempY + 66;
+        do Screen.drawRectangle(tempX, tempY, tempX + 10, tempY + 10);
+
+        let tempX = Game.getAX(cursorX) - 38;
+        do Screen.drawRectangle(tempX, tempY, tempX + 10, tempY + 10);
+
+        return;
+    }
+
+    method void erase() {
+        var int tempX, tempY;
+        let tempX = Game.getAX(cursorX) - 38;
+        let tempY = Game.getAY(cursorY) - 37;
+
+        do Screen.setColor(false);
+        do Screen.drawRectangle(tempX, tempY, tempX + 10, tempY + 10);
+
+        let tempX = tempX + 66;
+        do Screen.drawRectangle(tempX, tempY, tempX + 10, tempY + 10);
+
+        let tempY = tempY + 66;
+        do Screen.drawRectangle(tempX, tempY, tempX + 10, tempY + 10);
+
+        let tempX = Game.getAX(cursorX) - 38;
+        do Screen.drawRectangle(tempX, tempY, tempX + 10, tempY + 10);
+
+        return;
+    }
+
+    method void moveUp() {
+        if (cursorY = 0) {
+            return;
+        }
+
+        do erase();
+        let cursorY = cursorY - 1;
+        do draw();
+
+        return;
+    }
+
+    method void moveDown() {
+        if (cursorY = 2) {
+            return;
+        }
+
+        do erase();
+        let cursorY = cursorY + 1;
+        do draw();
+        
+        return;
+    }
+
+    method void moveLeft() {
+        if (cursorX = 0) {
+            return;
+        }
+
+        do erase();
+        let cursorX = cursorX - 1;
+        do draw();
+        
+        return;
+    }
+
+    method void moveRight() {
+        if (cursorX = 2) {
+            return;
+        }
+
+        do erase();
+        let cursorX = cursorX + 1;
+        do draw();
+        
+        return;
+    }
+
+    method int getX() { return cursorX; }
+
+    method int getY() { return cursorY; }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}
